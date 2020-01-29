@@ -1,0 +1,137 @@
+#
+# rules that are common across all target rules
+#
+
+DEPDIR=$(OUTDIR)/dep
+OBJDIR=$(OUTDIR)/obj
+BINDIR=$(OUTDIR)
+PCHDIR=$(OUTDIR)/obj
+
+.SUFFIXES: .c .cpp .h .hpp .o .rpt
+
+# Work out other files we care about. Note: these (& all) values can
+# be overridden in the local Makefile
+OBJS=$(addprefix $(OBJDIR)/,$(addsuffix .o,$(basename $(SRCS))))
+HEADERS = $(addsuffix .h, $(basename $(SRCS)))
+
+default:: $(TARGET)
+
+INCLUDES=$(STD_INCLUDES) $(EXTRA_INCLUDES)
+LDFLAGS=$(STD_LDFLAGS) $(EXTRA_LDFLAGS)
+DEFINES=$(STD_DEFINES) $(EXTRA_DEFINES)
+
+# Dependency file template
+df=$(DEPDIR)/$(*D)/$(*F)
+
+$(OBJDIR)/%.o: %.c
+	@mkdir -p $(@D) $(dir $(df))
+	@mkdir -p $(CCACHE_DIR)
+	@CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) -M 0 &> /dev/null
+	@$(call build_cmd,\
+		$(CC) -c -o $@ $(CFLAGS) $(DEFINES) $(INCLUDES)\
+			-MMD -MF $(df).d -MT $@ $<,\
+		CC $<)
+	@cp $(df).d $(df).P; \
+		sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+			-e '/^$$/ d' -e 's/$$/ :/' < $(df).d >> $(df).P; \
+
+define compile_c_plus_plus
+@mkdir -p $(@D) $(dir $(df))
+@mkdir -p $(CCACHE_DIR)
+@CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) -M 0 &> /dev/null
+@$(call build_cmd,\
+	$(CXX) -c -o $@ $(CXXFLAGS) $(DEFINES) $(INCLUDES)\
+		-MMD -MF $(df).dd -MT $@ $<,\
+	CXX $<)
+@cp $(df).dd $(df).PP; \
+	sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+		-e '/^$$/ d' -e 's/$$/ :/' < $(df).dd >> $(df).PP
+endef
+
+$(OBJDIR)/%.o: %.cpp
+	$(compile_c_plus_plus)
+
+$(LOCAL_OUTDIR)::
+	@[[ -d $@ ]] || mkdir $@
+
+include $(WORKROOT)/Build/info.rules
+
+target::
+	@echo $(REAL_TARGET)
+
+clean::
+	@rm -rf $(CLEANFILES)
+
+clean_branch::
+	@rm -rf $(BUILDROOT_CONF)
+
+clean_ccache::
+	@rm -rf $(CCACHE_DIR)
+
+srclist::
+	@echo $(SRCS)
+
+objlist::
+	@echo $(OBJS)
+
+headerlist::
+	@echo $(HEADERS)
+
+#-------------------------
+# Convenience targets
+#-------------------------
+
+# hide the fact that we are calling make recursively
+MAKEARGS=--no-print-directory MAKEFLAGS=$(MAKEFLAGS)
+
+debug::
+	@$(MAKE) $(MAKEARGS) CONF=debug
+debug_clean::
+	@$(MAKE) $(MAKEARGS) CONF=debug clean
+debug_target::
+	@$(MAKE) $(MAKEARGS) CONF=debug target
+debug_srclist::
+	@$(MAKE) $(MAKEARGS) CONF=debug srclist
+debug_objlist::
+	@$(MAKE) $(MAKEARGS) CONF=debug objlist
+debug_headerlist::
+	@$(MAKE) $(MAKEARGS) CONF=debug headerlist
+
+all::
+	@$(MAKE) $(MAKEARGS)
+	@$(MAKE) $(MAKEARGS) debug
+all_clean::
+	@$(MAKE) $(MAKEARGS) clean
+	@$(MAKE) $(MAKEARGS) debug_clean
+all_target::
+	@$(MAKE) $(MAKEARGS) target
+	@$(MAKE) $(MAKEARGS) debug_target
+all_srclist::
+	@$(MAKE) $(MAKEARGS) srclist
+	@$(MAKE) $(MAKEARGS) debug_srclist
+all_objlist::
+	@$(MAKE) $(MAKEARGS) objlist
+	@$(MAKE) $(MAKEARGS) debug_objlist
+all_headerlist::
+	@$(MAKE) $(MAKEARGS) headerlist
+	@$(MAKE) $(MAKEARGS) debug_headerlist
+
+#-------------------------
+
+SRCC	= $(filter %.c, $(SRCS))
+SRCCPP	= $(filter %.cpp, $(SRCS))
+
+ifneq ($(strip $(filter %.cpp, $(SRCS))),)
+-include $(SRCCPP:%.cpp=$(DEPDIR)/%.PP)
+endif
+
+ifneq ($(strip $(filter %.c, $(SRCS))),)
+-include $(SRCC:%.c=$(DEPDIR)/%.P)
+endif
+
+dependlist::
+	@echo $(SRCC:%.c=$(DEPDIR)/%.d)
+	@echo $(SRCCPP:%.cpp=$(DEPDIR)/%.dd)
+
+printdir::
+	@echo $(CURDIR)
