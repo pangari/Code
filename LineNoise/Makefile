@@ -1,7 +1,7 @@
 include ../Build/macros.tmpl
 APP=LineNoiseExample
 
-SRCS = $(wildcard *.cpp)
+SRCS = $(wildcard *.C)
 
 LIBS=
 
