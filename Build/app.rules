@@ -1,0 +1,44 @@
+REAL_TARGET=$(BINDIR)/$(APP)
+TARGET=$(LOCAL_OUTDIR)/$(APP)
+LIBS+=$(STD_LIBS) $(EXTRA_LIBS) $(PLATFORM_LIBS)
+
+# This removes any linker directives that may be required to be in this list.
+LIBDEPS=$(filter -l%,$(LIBS)) $(filter %.a,$(LIBS)) $(filter %.so%,$(LIBS))
+
+# DO NOT MOVE THIS LINE.....it stuffs up the build
+include $(WORKROOT)/Build/common.rules
+
+# This makes sure -lfoo libs are correctly
+# picked up as dependencies in -L directories.
+vpath %.a  $(LIB_SEARCH_DIRS)
+vpath %.so $(LIB_SEARCH_DIRS)
+
+ifneq (,$(findstring $(DEPEND),1))
+	include $(WORKROOT)/Build/depend.rules
+endif
+
+symlink:: $(REAL_TARGET) $(LOCAL_OUTDIR)
+	@ln -sf $(REAL_TARGET) $(TARGET)
+
+gzip:: $(REAL_TARGET) symlink
+	@gzip -9 -c $(REAL_TARGET) > $(TARGET).gz
+
+gdb:: $(REAL_TARGET)
+	$(GDB) $(REAL_TARGET) $(OPTIONS)
+
+valgrind:: $(REAL_TARGET)
+	$(VALGRIND) --tool=$(TOOL) $(OPTIONS) $(REAL_TARGET) $(TARGET_ARGS)
+
+$(TARGET): $(REAL_TARGET) $(LOCAL_OUTDIR) symlink
+
+$(REAL_TARGET): $(OBJS) $(LIBDEPS)
+	@mkdir -p $(LIBDIR)
+	@mkdir -p $(BINDIR)
+	@mkdir -p $(CCACHE_DIR)
+	@CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) -M 0 &> /dev/null
+	@$(call build_cmd,\
+		$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LIBS),\
+		LINK $@)
+
+liblist::
+	@echo $(filter %.a,$(LIBS))
