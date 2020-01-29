@@ -1,0 +1,15 @@
+include $(WORKROOT)/Build/common.rules
+
+APP=unit_test
+EXTRA_LIBS+=$(GTESTLIB)
+
+STD_DEFINES+=-DUNIT_TEST
+
+include $(WORKROOT)/Build/app.rules
+
+test: $(TARGET)
+	@$(TARGET) $(EXTRA_TEST_ARGS)
+
+test-auto: $(TARGET) $(LOCAL_OUTDIR)
+	@$(TARGET) --gtest_output=xml:$(LOCAL_OUTDIR)/gtest_result.xml $(EXTRA_TEST_ARGS)
+	@sed -i 's/classname="\(.*\)"/classname="\1 ($(TAG))"/' $(LOCAL_OUTDIR)/gtest_result.xml
