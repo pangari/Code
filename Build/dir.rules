@@ -1,0 +1,28 @@
+ifdef SUBDIRS
+
+default depend target clean srclist objlist headerlist debug debug_clean debug_target debug_srclist debug_objlist debug_headerlist all all_clean all_target all_srclist all_objlist all_headerlist:: $(SUBDIRS)
+.PHONY: $(SUBDIRS)
+
+$(SUBDIRS):
+	@$(MAKE) -C$@ $(MAKECMDGOALS)
+
+else
+
+SUBDIRS = $(APPDIRS) $(LIBDIRS)
+default depend target clean srclist objlist headerlist debug debug_clean debug_target debug_srclist debug_objlist debug_headerlist all all_clean all_target all_srclist all_objlist all_headerlist:: $(SUBDIRS)
+.PHONY: $(SUBDIRS)
+
+$(APPDIRS): $(LIBDIRS)
+	@$(MAKE) -C$@ $(MAKECMDGOALS)
+$(LIBDIRS):
+	@$(MAKE) -C$@ $(MAKECMDGOALS)
+
+endif
+
+include $(WORKROOT)/Build/info.rules
+
+clean_branch::
+	@rm -rf $(BUILDROOT_CONF)
+
+clean_ccache::
+	@rm -rf $(CCACHE_DIR)
