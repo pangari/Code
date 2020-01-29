@@ -7,7 +7,7 @@ OBJDIR=$(OUTDIR)/obj
 BINDIR=$(OUTDIR)
 PCHDIR=$(OUTDIR)/obj
 
-.SUFFIXES: .c .cpp .h .hpp .o .rpt
+.SUFFIXES: .c .C .h .H .o .rpt
 
 # Work out other files we care about. Note: these (& all) values can
 # be overridden in the local Makefile
@@ -48,7 +48,7 @@ define compile_c_plus_plus
 		-e '/^$$/ d' -e 's/$$/ :/' < $(df).dd >> $(df).PP
 endef
 
-$(OBJDIR)/%.o: %.cpp
+$(OBJDIR)/%.o: %.C
 	$(compile_c_plus_plus)
 
 $(LOCAL_OUTDIR)::
@@ -119,10 +119,10 @@ all_headerlist::
 #-------------------------
 
 SRCC	= $(filter %.c, $(SRCS))
-SRCCPP	= $(filter %.cpp, $(SRCS))
+SRCCPP	= $(filter %.C, $(SRCS))
 
-ifneq ($(strip $(filter %.cpp, $(SRCS))),)
--include $(SRCCPP:%.cpp=$(DEPDIR)/%.PP)
+ifneq ($(strip $(filter %.C, $(SRCS))),)
+-include $(SRCCPP:%.C=$(DEPDIR)/%.PP)
 endif
 
 ifneq ($(strip $(filter %.c, $(SRCS))),)
@@ -131,7 +131,7 @@ endif
 
 dependlist::
 	@echo $(SRCC:%.c=$(DEPDIR)/%.d)
-	@echo $(SRCCPP:%.cpp=$(DEPDIR)/%.dd)
+	@echo $(SRCCPP:%.C=$(DEPDIR)/%.dd)
 
 printdir::
 	@echo $(CURDIR)
