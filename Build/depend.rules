@@ -1,0 +1,34 @@
+##################################################################################################################################
+#
+# To use just add this line at the end of your Makefile
+#
+#	include $(WORKROOT)/Build/depend.rules
+#
+##################################################################################################################################
+
+MAKEARGS=CONF=$(CONF) COMPILER=$(COMPILER) ARCH=$(ARCH) PIC=$(PIC)
+PROJECT_DEPENDS?=.no.extra.rules.
+
+##################################################################################################################################
+# Dependencies
+##################################################################################################################################
+
+#.PHONY: \
+#	$(LIBDIR)/libmurmur.a \
+#	$(LIBDIR)/libminiz.a \
+#	$(LIBDIR)/libtibrvcpp.a \
+#
+#$(LIBDIR)/libmurmur.a:
+#	@$(MAKE) -C $(WORKROOT)/Murmur $(MAKEARGS) $(BUILD_TARGET)
+#
+#$(LIBDIR)/libminiz.a:
+#	@$(MAKE) -C $(WORKROOT)/miniz $(MAKEARGS) $(BUILD_TARGET)
+#
+#$(LIBDIR)/libtibrvcpp.a:
+#	@$(MAKE) -C $(WORKROOT)/tibrv $(MAKEARGS) $(BUILD_TARGET)
+
+##################################################################################################################################
+# Project specific dependencies (if set)
+##################################################################################################################################
+
+-include $(PROJECT_DEPENDS)
