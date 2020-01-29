@@ -1,0 +1,44 @@
+include $(WORKROOT)/Build/static_lib.rules
+
+LIBS=$(STD_LIBS) $(EXTRA_LIBS) $(PLATFORM_LIBS)
+
+# This removes any linker directives that may be required to be in this list.
+LIBDEPS=$(filter -l%,$(LIBS)) $(filter %.a,$(LIBS)) $(filter %.so%,$(LIBS))
+
+# This makes sure -lfoo libs are correctly
+# picked up as dependencies in -L directories.
+vpath %.a  $(LIB_SEARCH_DIRS)
+vpath %.so $(LIB_SEARCH_DIRS)
+
+ifneq (,$(findstring $(DEPEND),1))
+	include $(WORKROOT)/Build/depend.rules
+endif
+
+STATIC_LIB=$(LIBDIR)/lib$(BASE).a
+SHARDED_LIB=$(LIBDIR)/lib$(BASE).so
+#SHARDED_CMD=$(LD) -shared -o $(SHARDED_LIB) -Wl,--whole-archive $(STATIC_LIB) -Wl,--no-whole-archive $(LDFLAGS) $(LIBS) $(EXTRA_OBJS)
+SHARDED_CMD=$(LD) -shared -o $(SHARDED_LIB) -Wl,-all_load $(STATIC_LIB) -Wl,-noall_load $(LDFLAGS) $(LIBS) $(EXTRA_OBJS)
+
+COMMON_COMPILE_FLAGS += -fpic
+
+$(SHARDED_LIB):: $(STATIC_LIB) $(LIBDEPS) $(EXTRA_OBJS) $(LOCAL_OUTDIR)
+	@mkdir -p $(LIBDIR)
+	$(CRT_CMD)
+	@$(call build_cmd,\
+	$(SHARDED_CMD),\
+	DYNAMIC LIB $(SHARDED_LIB))
+
+symlink:: $(SHARDED_LIB)
+	@ln -sf $(SHARDED_LIB) $(LOCAL_OUTDIR)/lib$(BASE).so
+
+gzip:: $(SHARDED_LIB) symlink
+	@gzip -9 -c $(SHARDED_LIB) > $(LOCAL_OUTDIR)/lib$(BASE).so.gz
+
+static:: $(STATIC_LIB)
+shared:: $(SHARDED_LIB) symlink
+
+default:: shared
+
+liblist::
+	@echo $(filter %.a,$(LIBS))
+
