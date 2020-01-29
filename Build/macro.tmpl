@@ -1,0 +1,286 @@
+override ARCH=x86_64
+#override COMPILER=gcc740
+override COMPILER=gcc920
+#override COMPILER=clang
+#override CPPCHECK=0
+override VERBOSE=1
+override CONF=debug
+
+SELF_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
+override WORKROOT=$(shell /usr/local/bin/greadlink -f $(SELF_DIR)..)
+WORKROOT_CALCULATED=true
+MAKEFLAGS += -j4
+
+# Default SDK and compiler
+DEFCOMP:=clang
+
+# input a path; retuLOCAL_OUTDIRrns 'missing' or 'found'
+file_exists=$(shell ls -d $(1) 2> /dev/null | wc -l | sed 's/^[ ]*//' | sed 's/0/missing/' | sed 's/[0-9]*/found/')
+
+characters := A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+characters += a b c d e f g h i j k l m n o p q r s t u v w y z
+characters += 0 1 2 3 4 5 6 7 8 9
+
+# find OS and OS version
+OS:=$(shell uname | tr A-Z a-z)
+ifeq ($(OS),linux)
+	SUSE_EXISTS:=$(call file_exists,/etc/SuSE-release)
+	ifeq ($(SUSE_EXISTS),found)
+		OS:=$(shell tr A-Z a-z < /etc/SuSE-release | grep version | sed 's/^[a-z =]*/suse/')
+	endif
+endif
+
+# can override to use compiler other than default
+COMPILER=$(DEFCOMP)
+
+SPECIAL_CFLAGS=
+SPECIAL_LDFLAGS=
+
+# Can override to cross-compile 32-bit code on 64-bit machines.
+ARCH:=$(shell arch)
+if64=$(if $(findstring x86_64,$(ARCH)),$(1),$(2))
+
+ifeq ($(USER),wwwrun)
+	LLVM_COLOR=
+else
+	LLVM_COLOR=-fcolor-diagnostics
+endif
+
+ifneq (,$(findstring $(COMPILER),gcc920))
+	SPECIAL_CFLAGS=
+	SPECIAL_LDFLAGS=
+
+	BASEDIR:=/usr/local/Cellar/gcc/9.2.0_3
+	COMPDIR:=$(BASEDIR)
+
+	CCACHE_BIN:=/usr/local/bin/ccache
+	CCACHE_DIR:=$(WORKROOT)/.ccache/$(USER)
+
+	CC_BIN:=$(COMPDIR)/bin/gcc-9
+	CXX_BIN:=$(COMPDIR)/bin/g++-9
+	LD_BIN:=$(COMPDIR)/bin/g++-9
+
+	CC:=CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) $(CC_BIN)
+	CXX:=CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) $(CXX_BIN)
+	LD:=CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) $(LD_BIN)
+	AR:=/usr/bin/ar cruv
+	RANLIB:=/usr/bin/ranlib
+	GDB:=/usr/local/bin/gdb
+else
+ifneq (,$(findstring $(COMPILER),gcc740))
+	SPECIAL_CFLAGS=
+	SPECIAL_LDFLAGS=
+
+	BASEDIR:=/opt/pkg/gcc7
+	COMPDIR:=$(BASEDIR)
+
+	CCACHE_BIN:=/opt/pkg/bin/ccache
+	CCACHE_DIR:=$(WORKROOT)/.ccache/$(USER)
+
+	CC_BIN:=$(COMPDIR)/bin/gcc
+	CXX_BIN:=$(COMPDIR)/bin/g++
+	LD_BIN:=$(COMPDIR)/bin/g++
+
+	CC:=CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) $(CC_BIN)
+	CXX:=CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) $(CXX_BIN)
+	LD:=CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) $(LD_BIN)
+	AR:=/usr/bin/ar cruv
+	RANLIB:=/usr/bin/ranlib
+	GDB:=/opt/pkg/bin/gdb
+else
+ifneq (,$(findstring $(COMPILER),clang))
+	SPECIAL_CFLAGS=
+	SPECIAL_LDFLAGS=-lstdc++
+
+	BASEDIR:=/usr
+	COMPDIR:=$(BASEDIR)
+	GDBDIR:=/usr/local
+
+	CCACHE_BIN:=/usr/local/bin/ccache
+	CCACHE_DIR:=$(WORKROOT)/.ccache/$(USER)
+
+	CC_BIN:=$(COMPDIR)/bin/clang
+	CXX_BIN:=$(COMPDIR)/bin/clang++
+	LD_BIN:=$(COMPDIR)/bin/clang++
+
+	CC:=CCACHE_DIR=$(CCACHE_DIR) $(CC_BIN) -Qunused-arguments $(LLVM_COLOR)
+	CXX:=CCACHE_DIR=$(CCACHE_DIR) $(CXX_BIN) -Qunused-arguments $(LLVM_COLOR)
+	LD:=CCACHE_DIR=$(CCACHE_DIR) $(LD_BIN) -Qunused-arguments $(LLVM_COLOR)
+	CC:=CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) $(CC_BIN) -Qunused-arguments $(LLVM_COLOR)
+	CXX:=CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) $(CXX_BIN) -Qunused-arguments $(LLVM_COLOR)
+	LD:=CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) $(LD_BIN) -Qunused-arguments $(LLVM_COLOR)
+	AR:=/usr/bin/ar cruv
+	RANLIB:=/usr/bin/ranlib
+	GDB:=/usr/local/bin/gdb
+else
+	IGNORE:=$(shell printf "*** Unsupported compiler: [$(COMPILER)]\n" > $(shell tty))
+	$(error)
+endif
+endif
+endif
+
+CC_EXISTS:=$(call file_exists,$(CC_BIN))
+CXX_EXISTS:=$(call file_exists,$(CXX_BIN))
+LD_EXISTS:=$(call file_exists,$(LD_BIN))
+AR_EXISTS:=$(call file_exists,$(AR))
+RANLIB_EXISTS:=$(call file_exists,$(RANLIB))
+GDB_EXISTS:=$(call file_exists,$(GDB))
+
+
+ERROR_TEXT=
+ifeq ($(GDB_EXISTS),missing)
+	ERROR_TEXT="*** GNU Debugger is missing [$(GDB)]"
+endif
+ifeq ($(RANLIB_EXISTS),missing)
+	ERROR_TEXT="*** Unsupported compiler: Missing RANLIB [$(RANLIB)]"
+endif
+ifeq ($(AR_EXISTS),missing)
+	ERROR_TEXT="*** Unsupported compiler: Missing AR [$(AR)]"
+endif
+ifeq ($(LD_EXISTS),missing)
+	ERROR_TEXT="*** Unsupported compiler: Missing LD [$(LD)]"
+endif
+ifeq ($(CXX_EXISTS),missing)
+	ERROR_TEXT="*** Unsupported compiler: Missing CXX [$(CXX)]"
+endif
+ifeq ($(CC_EXISTS),missing)
+	ERROR_TEXT="*** Unsupported compiler: Missing CC [$(CC)]"
+endif
+
+ifneq ($(ERROR_TEXT),)
+	TTY:=$(shell tty)
+	IGNORE:=$(shell echo $(ERROR_TEXT) > $(TTY))
+	$(error)
+endif
+
+# Command macros
+CC+=$(SPECIAL_CFLAGS)
+CXX+=$(SPECIAL_CFLAGS)
+LD+=$(SPECIAL_LDFLAGS)
+
+TOOLCHAIN:=$(COMPILER)
+
+# Default target
+CONF=release
+ifrelease=$(if $(findstring release,$(CONF)),$(1),$(2))
+
+ifeq ($(findstring $(CONF),debug release),)
+ $(error Unsupported configuration: $(CONF))
+endif
+
+TAG=$(OS)-$(ARCH)-$(TOOLCHAIN)-$(CONF)$(CONF_VARIANT)
+
+STD_DEFINES+=\
+	-DBUILD_TAG=$(TAG) \
+	-DBUILD_SYSTEM=$(OS) \
+	-DBUILD_ARCH=$(ARCH) \
+	-DBUILD_COMPILER=$(COMPILER) \
+	-DBUILD_CONF=$(CONF) \
+
+# Function to check if need to compile
+# with position-independent code on (64-bit).
+ifpic=$(if $(findstring x86_64-1,$(ARCH)-$(PIC)),$(1),$(2))
+
+# Global build tree.
+BUILDROOT?=$(WORKROOT)/.build/$(USER)
+
+# Per-configuration build path.
+BUILDROOT_CONF=$(BUILDROOT)/$(subst -,/,$(TAG))
+
+# Per-WORKROOT libraries build path.
+ABSROOT:=$(shell /usr/local/bin/greadlink -f $(WORKROOT))
+LIBDIR=$(BUILDROOT_CONF)/lib$(ABSROOT)
+
+# Links will be created here.
+LOCAL_OUTDIR=$(TAG)-$(USER)
+
+# Per-project build path.
+ifneq "$(strip $(BASE))" ""
+	OUTDIR=$(BUILDROOT_CONF)/build$(CURDIR)/$(BASE)
+else
+	ifneq "$(strip $(APP))" ""
+		OUTDIR=$(BUILDROOT_CONF)/build$(CURDIR)/$(APP)
+	else
+		OUTDIR=$(BUILDROOT_CONF)/build$(CURDIR)
+	endif
+endif
+
+LIB_SEARCH_DIRS=
+STD_LDFLAGS=
+
+STD_DEFINES+=-D_GLIBCXX_USE_NANOSLEEP -D_GLIBCXX_USE_SCHED_YIELD -D_GLIBCXX_USE_CLOCK_REALTIME -D__STDC_FORMAT_MACROS
+
+# Standard include paths
+STD_INCLUDES=\
+	-I.\
+	-I$(WORKROOT)\
+
+LIB_SEARCH_DIRS+= \
+	.\
+	$(LIBDIR)\
+
+STD_LDFLAGS+= $(LIB_SEARCH_DIRS:%=-L%) $(ARCH_LINK_FLAGS) -pthread
+
+# Standard defines
+STD_DEFINES+=-D_REENTRANT
+
+GTESTLIB=/usr/local/lib/libgtest_main.a  /usr/local/lib/libgtest.a
+
+# Control compiler output verbosity
+# arg1: build command
+# arg2: abbreviated command string in terse mode
+build_cmd=\
+	echo $(if $(findstring $(VERBOSE),1 true yes),$(2),> /dev/null);\
+	echo\
+		$(if $(findstring $(VERBOSE),1 true yes),\
+			$(1),\
+			$(2));\
+	$(1)
+
+# Disabled warnings for now due to spam:
+# unreachable-code
+# shadow
+# disabled-optimization
+# inline
+GCC_WARN=\
+	all \
+	extra
+GCC_C_WARN=$(GCC_WARN)
+GCC_CPP_WARN=$(GCC_WARN)\
+	no-non-virtual-dtor \
+	no-deprecated
+
+CONF_VARIANT=$(call ifpic,-pic,)
+PIC_FLAGS=$(call ifpic,-fpic -fvisibility=hidden,)
+
+# Per architecture flags.
+ARCH_FLAGS=$(if $(findstring i686, $(ARCH)),-m32 -march=i686,-m64)
+ARCH_COMPILE_FLAGS=$(ARCH_FLAGS)
+ARCH_LINK_FLAGS=$(ARCH_FLAGS)
+
+RELEASE_COMPILE_CFLAGS=-ggdb3 -O3
+DEBUG_COMPILE_CFLAGS=-ggdb3
+
+RELEASE_COMPILE_CPPFLAGS=$(RELEASE_COMPILE_CFLAGS) -DNDEBUG
+DEBUG_COMPILE_CPPFLAGS=$(DEBUG_COMPILE_CFLAGS)
+
+ifneq (,$(findstring $(COMPILER),clang))
+	ARCH_LINK_FLAGS=
+	DEBUG_COMPILE_FLAGS=-g
+endif
+
+CONF_COMPILE_CFLAGS=\
+	$(if $(findstring debug, $(CONF)),\
+	$(DEBUG_COMPILE_CFLAGS),\
+	$(RELEASE_COMPILE_CFLAGS))
+
+CONF_COMPILE_CPPFLAGS=\
+	$(if $(findstring debug, $(CONF)),\
+	$(DEBUG_COMPILE_CPPFLAGS),\
+	$(RELEASE_COMPILE_CPPFLAGS))
+
+CFLAGS=$(ARCH_COMPILE_FLAGS) $(CONF_COMPILE_CFLAGS) $(PIC_FLAGS) $(GCC_C_WARN:%=-W%)
+CXXFLAGS=$(ARCH_COMPILE_FLAGS) $(CONF_COMPILE_CPPFLAGS) $(PIC_FLAGS) -std=c++17 $(GCC_CPP_WARN:%=-W%)
+
+CLEANFILES=$(OUTDIR) $(LOCAL_OUTDIR) $(TARGET) core *~ *.bak *.BAK *.o *.do *.to *.gch
+
