@@ -1,5 +1,5 @@
 include ../Build/macros.tmpl
-APP=EncodeCStr
+APP=EncodeCStrExample
 
 SRCS = $(wildcard *.C)
 
