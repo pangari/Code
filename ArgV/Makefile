@@ -1,5 +1,5 @@
 include ../Build/macros.tmpl
-APP=ArgV
+APP=ArgVExample
 
 SRCS = $(wildcard *.C)
 
