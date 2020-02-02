@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2020> <duncan.forster@mac.com>
+Copyright (C) <2005-2020> <duncan.forster at mac dot com>
 
 Permission to use, copy, modify, and/or distribute this software for any purpose
 with or without fee is hereby granted.
