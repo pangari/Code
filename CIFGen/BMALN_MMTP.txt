@@ -1,0 +1,76 @@
+CONX_REQ Client Connection Request
+	HubId X(11) 
+	ProVer 9(4) 
+	SessConf 9(16) 
+	AuthData X(8) 
+	ETX X(1) 
+CONX_ACK Connection Acceptance by the HUB
+	SessConf 9(16) 
+	ETX X(1) 
+CONX_NCK Connection Refusal by the HUB
+	Reason 9(2) 
+	ETX X(1) 
+DCNX_REQ Disconnection Request
+	Reason 9(2) 
+	LastSeqNo 9(8) 
+	ETX X(1) 
+DCNX_ACK Disconnection Request Acknowledgement
+	LastSeqNo 9(8) 
+	ETX X(1) 
+DATA_MSG Data Transmission
+	SeqNo 9(8) 
+	AdminLen 9(4) 
+	BusinessLen 9(4) 
+STRT_REQ Transmission/Retransmission Request
+	MessID X(24) 
+	ETX X(1) 
+STRT_ACK Transmission/Retransmission Request Acknowledgement
+	NextSeqNo 9(8) 
+	MessID X(24) 
+	ETX X(1) 
+STRT_NCK Transmission/Retransmission Request Refusal
+	Reason 9(2) 
+	MessID X(24) 
+	ETX X(1) 
+SYNC_REQ Acknowledgement Request by Data Source
+	ETX X(1) 
+SYNC_ACK Acknowledgement by Data Receiver
+	LastSeqNo 9(8) 
+	MessID X(24) 
+	ETX X(1) 
+ERR_INDI Error Indication by Data Receiver
+	ErrCode 9(2) 
+	ErrDetail 9(2) 
+	LastSeqNo 9(8) 
+	MsgLen 9(4) 
+SRVC_MSG Service Message
+	Type X(4) 
+	ServiceLen 9(4) 
+PRSC_MSG Heartbeat Message
+	ETX X(1) 
+ADMIN_DATA_E0 E0 Admin Data Type
+	Type X(2) Indicates the admin data type.
+	MsgId X(24) Message identifier assigned by the sender.
+	SendTime 9(12) Send timestamp. Format: MMDDHHmmsscc. Date and time of message transmission.
+	ReceiptTime 9(12) Receive timestamp. Format: MMDDHHmmsscc. Date and time of message reception.
+	DeliveryTimeout 9(6) Format: HHmmss. This field is a timestamp, NOT a delay. For future use.
+	RouteData X(11) Routable field. May be used by the HUB for routing data: ROUTE_DATA.
+	Filler X(5) Characters to fill E0 administrative data to its defined size.
+ADMIN_DATA_E1 E1 Admin Data Type
+	Type X(2) Indicates the admin data type.
+	MsgId X(24) Message identifier assigned by the sender.
+	SendTime 9(12) Send timestamp. Format: MMDDHHmmsscc. Date and time of message transmission.
+	ReceiptTime 9(12) Receive timestamp. Format: MMDDHHmmsscc. Date and time of message reception.
+	DeliveryTimeout 9(6) Format: HHmmss. This field is a timestamp, NOT a delay. For future use.
+	Filler X(8) Characters to fill E1 administrative data to its defined size.
+ADMIN_DATA_M0 M0 Admin Data Type
+	Type X(2) Indicates the admin data type.
+	MsgId X(24) Message identifier assigned by the sender.
+	SendTime 9(12) Send timestamp. Format: MMDDHHmmsscc. Date and time of message transmission.
+	ReceiptTime 9(12) Receive timestamp. Format: MMDDHHmmsscc. Date and time of message reception.
+	DeliveryTimeout 9(6) Format: HHmmss. This field is a timestamp, NOT a delay. For future use.
+	RouteData X(11) Routable field. May be used by the HUB for routing data: ROUTE_DATA.
+	OnMember X(8) Member ID.
+	Domain X(1) 
+	Dest X(11) 
+	Filler X(41) Characters to fill M0 administrative data to its defined size.

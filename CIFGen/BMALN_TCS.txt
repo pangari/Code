@@ -1,0 +1,168 @@
+SLE0401K Declaration
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	PrincCode X(8) Principal code
+	Sign X(1) Sign of the declaring party’s trade
+	Qty 9(9) Quantity
+	SecCode X(12) Security code
+	Price S(1) Price
+		Ift X(1) Format indicator
+		Qmt 9(9) Data
+	ClearCode X(8) Clearer code
+	OrderType X(1) Order type
+	Filler1 X(1) Filler1
+	Filler2 X(3) Filler2
+	Memo X(10) Memo
+	CtprtCode X(8) Counterpart member code
+	CtprtPrincCode X(8) Counterpart principal code
+	OpeInd X(1) Operation type indicator
+	StartVWAP 9(6) Start time for VWAP computation period
+	EndVWAP 9(6) End time for VWAP computation period
+	ClientAcct X(16) Client account
+	TraderID X(8) Trader ID
+	CtprtTraderID X(8) Counterpart Trader ID
+	CBIC S(1) BIC Code of the Member
+		CBank X(4) Bank Code
+		Country X(2) Country Code
+		CTown X(2) Town Code
+		CBranch X(3) Branch Code
+	ClearCodeCross X(8) Clearer code for seller in cross situation
+	OrderTYpeCross X(1) Order type for seller in cross situation
+	ClientAcctCross X(16) Client account number for seller in cross situation
+	MemoCross X(10) Memo for seller in cross situation
+	Filler3 X(30) Filler3
+SLE0411K Declaration reception notice
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	TCSRef X(16) TCS reference
+	PrevInd X(1) Previous day trade indicator
+	MembCode X(8) Member code
+	PrincCode X(8) Principal code (if declaration mandated)
+	Sign X(1) Sign of declaring party's trade
+	Qty 9(9) Quantity
+	SecCode X(12) Security code
+	Price S(1) Price
+		Ift X(1) Format indicator
+		Qmt 9(9) Data
+	ClearCode X(8) Clearer code
+	OrderType X(1) Order type
+	Filler1 X(1) Filler1
+	Filler2 X(3) Filler2
+	Memo X(10) Memo
+	CtprtCode X(8) Counterpart member code
+	CtprtPrincCode X(8) Counterpart principal code (if counterpart declaration mandated)
+	Time 9(6) Time declaration received
+	OpeInd X(1) Operation type indicator
+	StartVWAP 9(6) Start time for VWAP computation period
+	EndVWAP 9(6) End time for VWAP computation period
+	ClientAcct X(16) Client account number
+	TraderID X(8) Trader ID
+	CtprtTraderID X(8) Counterpart Trader ID
+	CBIC S(1) BIC Code of the Member
+		CBank X(4) Bank Code
+		Country X(2) Country Code
+		CTown X(2) Town Code
+		CBranch X(3) Branch Code
+	Filler3 X(30) Filler3
+SLE0412K Notification of a declaration issued by the counterpart
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	TCSRef X(16) TCS reference
+	PrevInd X(1) Previous day trade indicator
+	MembCode X(8) Member code
+	PrincCode X(8) Principal code (if declaration mandated)
+	Sign X(1) Sign of declaring party's trade
+	Qty 9(9) Quantity
+	SecCode X(12) Security code
+	Price S(1) Price
+		Ift X(1) Format indicator
+		Qmt 9(9) Data
+	Filler1 X(8) Filler1
+	Filler2 X(1) Filler2
+	Filler3 X(1) Filler3
+	Filler4 X(3) Filler4
+	Filler5 X(10) Filler5
+	CtprtCode X(8) Counterpart member code
+	CtprtPrincCode X(8) Counterpart principal code (if counterpart declaration mandated)
+	Time 9(6) Time declaration received
+	OpeInd X(1) Operation type indicator
+	StartVWAP 9(6) Start time for VWAP computation period
+	EndVWAP 9(6) End time for VWAP computation period
+	TraderID X(8) Trader ID
+	CtprtTraderID X(8) Counterpart Trader ID
+	Filler6 X(30) Filler6
+SLE0402K Declaration cancellation request
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	TCSRef X(16) TCS reference (attributed to the declaration to be cancelled)
+	Filler1 X(30) Filler1
+SLE0413K Declaration cancellation notice
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	TCSRef X(16) TCS reference
+	Filler1 X(30) Filler1
+SLE0403K Declaration refusal request issued by the counterpart
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	TCSRef X(16) TCS reference (attributed to the declaration issued by the counterpart)
+	Filler1 X(30) Filler1
+SLE0414K Declaration refusal notice
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	TCSRef X(16) TCS reference
+	Filler1 X(30) Filler1
+SLE0415K Matching notice
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	TCSRef X(16) TCS reference
+	TCSCtprtRef X(16) TCS counterparty reference
+	Filler1 X(30) Filler1
+SLE0416K Elimination notice
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	TCSRef X(16) TCS reference
+	Filler1 X(30) Filler1
+SLE0404K TCS trade cancellation request
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	TCSRef X(16) TCS reference
+	Filler1 X(30) Filler1
+SLE0417K TCS trade cancellation notice
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	CancelInd X(1) Cancellation indicator
+	TCSRef X(16) TCS reference
+	TCSCtprtRef X(16) TCS counterparty reference
+	Filler1 X(30) Filler1
+SLE0418K Rejection notice
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	RejCode 9(6) Rejection code
+	RejName X(71) Rejection name
+	MssgRej X(200) Message rejected
+	Filler1 X(30) Filler1
+SLE0419K Start of TCS trading session notice
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	Filler1 X(30) Filler1
+SLE0420K End of TCS trading session notice
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	Filler1 X(30) Filler1
+SLE0502K Entry of a client account
+	LRfIntAdfMsg X(16) Internal Subscriber Reference
+	CFon 9(4) Function Code
+	DSeaBs X(8) Trading Date
+	HSeaBs X(6) Trading Time
+	NCptePosIptOm X(16) Clearing Client Account Number
+	ICptePosIptOm X(1) Clearing Client Account Status
+	CBIC S(1) BIC Code of the Member
+		CBank X(4) Bank Identifier Code
+		Country X(2) Country Code
+		CTown X(2) Town Code
+		CBranch X(3) Branch Code
+SLE0512K Acknowledgement of a client account
+	MembRef X(16) Internal Member Reference
+	FuncCode 9(4) Function code
+	Filler1 X(344) Filler1
+

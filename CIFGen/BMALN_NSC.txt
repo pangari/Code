@@ -1,0 +1,498 @@
+ADonCompOmAplKL KLSE Clearing data aggregate
+	CIdNgSaiOm X(8) ID of the trader that entered the order
+	YCpteOm X(1) Type of Clearing Account for Member that owns the order
+	NCptePosIptOm X(16) Client Account Number
+	CIdOmNg X(8) Trader Order Number (TON)
+	DHSaiOmAdf X(14) Order Entry Date and Time
+	CBIC S(1) BIC Code of the Member
+		CBq X(4) Bank Code
+		CPyMbr X(2) Country Code
+		CVilMbr X(2) Town Code
+		CSec X(3) Branch Code
+	LSaiOm X(18) Free text entered with order
+	CIdMbrDestGupOm X(8) ID of Clearing System Member that is the beneficiary of a give-up
+ADonProdCpsTran Underlying Instrument Aggregate
+	CIsinProdCps X(12) Underlying Identification Code
+	ARaoCps S(1) Leg ratio description aggregate
+		CSignKMuProdCps X(1) Component product multiplication coefficient sign
+		KRaoCpsStg 9(4) Leg number Ratio
+	PTranProdCps S(1) Underlying Instruments Trade Price
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	NTranKLProdCps 9(8) Underlying Instruments TRS Trade Number Bis
+ACpsCreStg Leg description aggregate
+	CIsinProdCps X(12) Underlying Identification Code
+	ARaoCps S(1) Leg ratio description aggregate
+		CSignKMuProdCps X(1) Component product multiplication coefficient sign
+		KRaoCpsStg 9(4) Leg number Ratio
+SLE0001K Order Entry
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	DSaiOm 9(8) Order entry date (in the central trading system)
+	NSeqOm 9(6) Order sequence number
+	CValIsin X(12) Instrument Identification
+	ISensOm X(1) Order Side
+	QTitTotOm 9(12) Order Total Quantity
+	YPLimSaiOm X(1) Type of Limit for an Order
+	PLimSaiOm S(1) Original Order Price
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	YValiOmNSC X(1) Validity Type of an Order
+	DVALIOM 9(8) Order validity date
+	QTitMinOm 9(12) Order Minimum Quantity
+	QTitDvlOm 9(12) Order Disclosed Quantity
+	CIdAdfEmetOm X(8) ID of trading system member that issued the order
+	YOm X(1) Code for the Technical Origin of the Order
+	ICfmOm 9(1) Order Confirmation Flag
+	IOmTrtPov 9(1) Preopening Order Flag
+	PDchOmStop S(1) Original Trigger Price
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	TValiOm 9(6) Order Validity Duration
+	QRestModAtd 9(12) Expected Remaining Quantity on Order Modification
+	ADonCompOmAplKL S(1,2) KLSE Clearing data aggregate
+		CIdNgSaiOm X(8) ID of the trader that entered the order
+		YCpteOm X(1) Type of Clearing Account for Member that owns the order
+		NCptePosIptOm X(16) Client Account Number
+		CIdOmNg X(8) Trader Order Number (TON)
+		DHSaiOmAdf X(14) Order Entry Date and Time
+		CBIC S(1) BIC Code of the Member
+			CBq X(4) Bank Code
+			CPyMbr X(2) Country Code
+			CVilMbr X(2) Town Code
+			CSec X(3) Branch Code
+		LSaiOm X(18) Free text entered with order
+		CIdMbrDestGupOm X(8) ID of Clearing System Member that is the beneficiary of a give-up
+SLE0002K Order Modification
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	DSaiOm 9(8) Order entry date (in the central trading system)
+	NSeqOm 9(6) Order sequence number
+	CValIsin X(12) Instrument Identification
+	ISensOm X(1) Order Side
+	QTitTotOm 9(12) Order Total Quantity
+	YPLimSaiOm X(1) Type of Limit for an Order
+	PLimSaiOm S(1) Original Order Price
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	YValiOmNSC X(1) Validity Type of an Order
+	DVALIOM 9(8) Order validity date
+	QTitMinOm 9(12) Order Minimum Quantity
+	QTitDvlOm 9(12) Order Disclosed Quantity
+	CIdAdfEmetOm X(8) ID of trading system member that issued the order
+	YOm X(1) Code for the Technical Origin of the Order
+	ICfmOm 9(1) Order Confirmation Flag
+	IOmTrtPov 9(1) Preopening Order Flag
+	PDchOmStop S(1) Original Trigger Price
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	TValiOm 9(6) Order Validity Duration
+	QRestModAtd 9(12) Expected Remaining Quantity on Order Modification
+	ADonCompOmAplKL S(1,2) KLSE Clearing data aggregate
+		CIdNgSaiOm X(8) ID of the trader that entered the order
+		YCpteOm X(1) Type of Clearing Account for Member that owns the order
+		NCptePosIptOm X(16) Client Account Number
+		CIdOmNg X(8) Trader Order Number (TON)
+		DHSaiOmAdf X(14) Order Entry Date and Time
+		CBIC S(1) BIC Code of the Member
+			CBq X(4) Bank Code
+			CPyMbr X(2) Country Code
+			CVilMbr X(2) Town Code
+			CSec X(3) Branch Code
+		LSaiOm X(18) Free text entered with order
+		CIdMbrDestGupOm X(8) ID of Clearing System Member that is the beneficiary of a give-up
+SLE0003K Order cancellation
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	DSaiOm 9(8) Order entry date (in the central trading system)
+	NSeqOm 9(6) Order sequence number
+	CIdAdfEmetOm X(8) ID of trading system member that issued the order
+	CValIsin X(12) Instrument Identification
+	ISensOm X(1) Side of order
+SLE0065K Global order cancellation
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	CIdAdfEmetOm X(8) ID of trading system member that issued the order
+	CIdGrc X(2) Instrument group identification
+	CValIsin X(12) Instrument Identification
+	ISensOm X(1) Side of order
+	YCpteOm X(1) Type of Clearing Account for Member that owns the order
+	YOm X(1) Code for the Technical Origin of the Order
+	CIdItfOm X(11) ID of the member's order entry server
+SLE0080K Command to enter a request for quote
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	CValIsin X(12) Instrument Identification
+	QTitDemP 9(12) Quantity of the Request For Quote
+	PTITACPUP S(1) Price of the Request For Quote
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	INonDifCAdhOn X(1) Member ID Broadcast Flag
+SLE0100K Trade cancellation notice
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	DSeaBsEven X(8) Date of trading session for event
+	CValIsin X(12) Instrument Identification
+	DSaiOm 9(8) Order entry date (in the central trading system)
+	NSeqOm 9(6) Order sequence number
+	PTran S(1) Trade Price
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	QTitTran 9(12) Traded quantity
+	HTRAN 9(6) Trade Time
+	NMsgRepoN 9(6) Response Sequence Number
+	HMsgRepoN X(6) Response Sequence Number Time
+	CIdAdfCie X(8) Counterpart Member Identification
+	NTran 9(7) Trade number
+	ISensOm X(1) Side of order
+	NTranKL 9(8) TRS Trade Number Bis
+SLE0101K Group state change notice
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	CIdGrc X(2) Instrument group identification
+	CEtaGrc X(1) Instrument group state
+	DSeaBs X(8) Trading date
+	HSeaBs X(6) Trading time
+	DHEmisMsgSpi X(14) Transmission Date Time
+	IClGrc X(1) Closing Indicator
+SLE0103K Trade creation notice
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	DSeaBs X(8) Trading date
+	CValIsin X(12) Instrument Identification
+	PTran S(1) Trade Price
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	QTitTran 9(12) Traded quantity
+	DHTran X(14) Trade Date and Time
+	ISensOm X(1) Side of order
+	CIdAdfCie X(8) Counterpart Member Identification
+	YOm X(1) Code for the Technical Origin of the Order
+	NMsgRepoN 9(6) Response Sequence Number
+	HMsgRepoN X(6) Response Sequence Number Time
+	NTran 9(7) Trade number
+	YOmOrgTran X(1) Type of orders at the origin of a trade
+	NTranKL 9(8) TRS Trade Number Bis
+	ADonCompOmAplKL S(1) KLSE Clearing data aggregate
+		CIdNgSaiOm X(8) ID of the trader that entered the order
+		YCpteOm X(1) Type of Clearing Account for Member that owns the order
+		NCptePosIptOm X(16) Client Account Number
+		CIdOmNg X(8) Trader Order Number (TON)
+		DHSaiOmAdf X(14) Order Entry Date and Time
+		CBIC S(1) BIC Code of the Member
+			CBq X(4) Bank Code
+			CPyMbr X(2) Country Code
+			CVilMbr X(2) Town Code
+			CSec X(3) Branch Code
+		LSaiOm X(18) Free text entered with order
+		CIdMbrDestGupOm X(8) ID of Clearing System Member that is the beneficiary of a give-up
+	ZProdCpsTran 9(2) Number of Underlying Instruments
+	ADonProdCpsTran S(0,40) Underlying Instrument Aggregate
+		CIsinProdCps X(12) Underlying Identification Code
+		ARaoCps S(1) Leg ratio description aggregate
+			CSignKMuProdCps X(1) Component product multiplication coefficient sign
+			KRaoCpsStg 9(4) Leg number Ratio
+		PTranProdCps S(1) Underlying Instruments Trade Price
+			IFt X(1) Decimal point locator (AtosEuronext)
+			QMt 9(9) Amount
+		NTranKLProdCps 9(8) Underlying Instruments TRS Trade Number Bis
+SLE0105K Execution notice
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	DSaiOm 9(8) Order entry date (in the central trading system)
+	NSeqOm 9(6) Order sequence number
+	CValIsin X(12) Instrument Identification
+	CIdGrc X(2) Instrument group identification
+	ISensOm X(1) Side of order
+	QTitTran 9(12) Traded quantity
+	PTran S(1) Trade Price
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	IPrsQTitRest X(1) Indicator for Remaining Quantity on an Order
+	QTitRestOm 9(12) Remaining Quantity of the Order
+	CIdAdfCie X(8) Counterpart Member Identification
+	YOm X(1) Code for the Technical Origin of the Order
+	NMsgRepoN 9(6) Response Sequence Number
+	DMsgRepoN X(8) Response Sequence Number Date
+	HMsgRepoN X(6) Response Sequence Number Time
+	NTran 9(7) Trade number
+	DTran X(8) Trade Date
+	YPLimSaiOm X(1) Type of Limit for an Order
+	YValiOmNSC X(1) Validity Type of an Order
+	CGdSVal X(1) Code of the instrument category
+	NTranKL 9(8) TRS Trade Number Bis
+	ADonCompOmAplKL S(1) KLSE Clearing data aggregate
+		CIdNgSaiOm X(8) ID of the trader that entered the order
+		YCpteOm X(1) Type of Clearing Account for Member that owns the order
+		NCptePosIptOm X(16) Client Account Number
+		CIdOmNg X(8) Trader Order Number (TON)
+		DHSaiOmAdf X(14) Order Entry Date and Time
+		CBIC S(1) BIC Code of the Member
+			CBq X(4) Bank Code
+			CPyMbr X(2) Country Code
+			CVilMbr X(2) Town Code
+			CSec X(3) Branch Code
+		LSaiOm X(18) Free text entered with order
+		CIdMbrDestGupOm X(8) ID of Clearing System Member that is the beneficiary of a give-up
+	ZProdCpsTran 9(2) Number of Underlying Instruments
+	ADonProdCpsTran S(0,40) Underlying Instrument Aggregate
+		CIsinProdCps X(12) Underlying Identification Code
+		ARaoCps S(1) Leg ratio description aggregate
+			CSignKMuProdCps X(1) Component product multiplication coefficient sign
+			KRaoCpsStg 9(4) Leg number Ratio
+		PTranProdCps S(1) Underlying Instruments Trade Price
+			IFt X(1) Decimal point locator (AtosEuronext)
+			QMt 9(9) Amount
+		NTranKLProdCps 9(8) Underlying Instruments TRS Trade Number Bis
+SLE0106K Instrument state change notice
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	DSeaBs X(8) Trading date
+	HSeaBs X(6) Trading time
+	CValIsin X(12) Instrument Identification
+	CEtaVal X(2) Code indicating the state of the instrument in NSC
+	CActModEtaVal X(1) Action code for the instrument state change
+	HOvPgmVal X(6) Programmed opening time for instrument
+	DHEmisMsgSpi X(14) Transmission Date Time
+SLE0098K User Defined Strategy creation
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	CIdAdfEmetOm X(8) ID of trading system member that issued the order
+	CIdNgSaiOm X(8) ID of the trader that entered the order
+	YQStg X(3) Strategy Quantity Type
+	YStg X(2) Strategy Type
+	PCpsDrvObl S(1) Future-type leg price
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	XDtaStg S(1) Delta Strategy percentage
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(18) Amount
+	ZCpsStg 9(2) Strategy Leg Number
+	ACpsCreStg S(40) Leg description aggregate
+		CIsinProdCps X(12) Underlying Identification Code
+		ARaoCps S(1) Leg ratio description aggregate
+			CSignKMuProdCps X(1) Component product multiplication coefficient sign
+			KRaoCpsStg 9(4) Leg number Ratio
+	IInOmStg X(1) Including Order Indicator
+	AInOmStg S(1) Order entry aggregate
+		YPLimSaiOm X(1) Type of Limit for an Order
+		PLimSaiOm S(1) Original Order Price
+			IFt X(1) Decimal point locator (AtosEuronext)
+			QMt 9(9) Amount
+		YValiOmNSC X(1) Validity Type of an Order
+		DVALIOM 9(8) Order validity date
+		TValiOm 9(6) Order Validity Duration
+		QTitDvlOm 9(12) Order Disclosed Quantity
+		QTitTotOm 9(12) Order Total Quantity
+		PDchOmStop S(1) Original Trigger Price
+			IFt X(1) Decimal point locator (AtosEuronext)
+			QMt 9(9) Amount
+		ISensOm X(1) Order Side
+		ADonCompOmAplKL S(1) KLSE Clearing data aggregate
+			CIdNgSaiOm X(8) ID of the trader that entered the order
+			YCpteOm X(1) Type of Clearing Account for Member that owns the order
+			NCptePosIptOm X(16) Client Account Number
+			CIdOmNg X(8) Trader Order Number (TON)
+			DHSaiOmAdf X(14) Order Entry Date and Time
+			CBIC S(1) BIC Code of the Member
+				CBq X(4) Bank Code
+				CPyMbr X(2) Country Code
+				CVilMbr X(2) Town Code
+				CSec X(3) Branch Code
+			LSaiOm X(18) Free text entered with order
+			CIdMbrDestGupOm X(8) ID of Clearing System Member that is the beneficiary of a give-up
+SLE0138K Order elimination
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	DSaiOm 9(8) Order entry date (in the central trading system)
+	NSeqOm 9(6) Order sequence number
+	YMajOmNSC X(1) Order Status
+	CValIsin X(12) Instrument Identification
+	QTitRestOm 9(12) Remaining Quantity of the Order
+	PLimSaiOm S(1) Original Order Price
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	CIdAdfEmetOm X(8) ID of trading system member that issued the order
+	YValiOmNSC X(1) Validity Type of an Order
+	Filler1 X(1) Filler1
+	DVALIOM 9(8) Order validity date
+	ISensOm X(1) Side of order
+	YPLimSaiOm X(1) Type of Limit for an Order
+	NMsgRepoN 9(6) Response Sequence Number
+	HMsgRepoN X(6) Response Sequence Number Time
+	Filler2 X(3) Filler2
+	ADonCompOmAplKL S(1) KLSE Clearing data aggregate
+		CIdNgSaiOm X(8) ID of the trader that entered the order
+		YCpteOm X(1) Type of Clearing Account for Member that owns the order
+		NCptePosIptOm X(16) Client Account Number
+		CIdOmNg X(8) Trader Order Number (TON)
+		DHSaiOmAdf X(14) Order Entry Date and Time
+		CBIC S(1) BIC Code of the Member
+			CBq X(4) Bank Code
+			CPyMbr X(2) Country Code
+			CVilMbr X(2) Town Code
+			CSec X(3) Branch Code
+		LSaiOm X(18) Free text entered with order
+		CIdMbrDestGupOm X(8) ID of Clearing System Member that is the beneficiary of a give-up
+SLE0144K Error message after an external trader or Market Control request
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	CFonOrg 9(4) Original NSC function code
+	CErNSC 9(6) Error Code
+	LErNSC X(71) Error Text
+SLE0172K Confirmation of order creation, modification or cancellation
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	DSaiOm 9(8) Order entry date (in the central trading system)
+	NSeqOm 9(6) Order sequence number
+	YMajOmNSC X(1) Order Status
+	CValIsin X(12) Instrument Identification
+	QTitTotOm 9(12) Order Total Quantity
+	ISensOm X(1) Order Side
+	PLimSaiOm S(1) Original Order Price
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	CIdAdfEmetOm X(8) ID of trading system member that issued the order
+	NMsgRepoN 9(6) Response Sequence Number
+	HMsgRepoN X(6) Response Sequence Number Time
+	YPLimSaiOm X(1) Type of Limit for an Order
+	QTitXteIntrOm 9(12) Matched Quantity at order entry
+	CFonOrg 9(4) Original NSC function code
+	DSaiOmIni X(8) Original Order Date
+	NSeqOmIni 9(6) Original order sequence number
+	YValiOmNSC X(1) Validity Type of an Order
+	DVALIOM 9(8) Order validity date
+	QTitMinOm 9(12) Order Minimum Quantity
+	QTitDvlOm 9(12) Order Disclosed Quantity
+	YOm X(1) Code for the Technical Origin of the Order
+	ICfmOm 9(1) Order Confirmation Flag
+	QTitRestOmIni 9(12) Original order remaining quantity
+	PDchOmStop S(1) Original Trigger Price
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	TValiOm 9(6) Order Validity Duration
+	ADonCompOmAplKL S(1) KLSE Clearing data aggregate
+		CIdNgSaiOm X(8) ID of the trader that entered the order
+		YCpteOm X(1) Type of Clearing Account for Member that owns the order
+		NCptePosIptOm X(16) Client Account Number
+		CIdOmNg X(8) Trader Order Number (TON)
+		DHSaiOmAdf X(14) Order Entry Date and Time
+		CBIC S(1) BIC Code of the Member
+			CBq X(4) Bank Code
+			CPyMbr X(2) Country Code
+			CVilMbr X(2) Town Code
+			CSec X(3) Branch Code
+		LSaiOm X(18) Free text entered with order
+		CIdMbrDestGupOm X(8) ID of Clearing System Member that is the beneficiary of a give-up
+	DHPriOm X(20) Order priority date time
+SLE0175K Confirmation of global order cancellation
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	DSeaBs X(8) Trading date
+	HSeaBs X(6) Trading time
+	CIdAdfEmetOm X(8) ID of trading system member that issued the order
+	CIdGrc X(2) Instrument group identification
+	CValIsin X(12) Instrument Identification
+	ISensOm X(1) Side of order
+	YCpteOm X(1) Type of Clearing Account for Member that owns the order
+	YOm X(1) Code for the Technical Origin of the Order
+	CIdItfOm X(11) ID of the member's order entry server
+SLE0191K Confirmation of command to enter a request for quote
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	DSeaBs X(8) Trading date
+	HSeaBs X(6) Trading time
+	CValIsin X(12) Instrument Identification
+	QTitDemP 9(12) Quantity of the Request For Quote
+	PTITACPUP S(1) Price of the Request For Quote
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	INonDifCAdhOn X(1) Member ID Broadcast Flag
+SLE0460K User Defined Strategy creation notice
+	LRfIntAdfMsg X(16) Internal subscriber reference
+	CFon 9(4) NSC function code
+	CIdAdfEmetOm X(8) ID of trading system member that issued the order
+	CIdNgSaiOm X(8) ID of the trader that entered the order
+	YQStg X(3) Strategy Quantity Type
+	YStg X(2) Strategy Type
+	PCpsDrvObl S(1) Future-type leg price
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(9) Amount
+	XDtaStg S(1) Delta Strategy percentage
+		IFt X(1) Decimal point locator (AtosEuronext)
+		QMt 9(18) Amount
+	ZCpsStg 9(2) Strategy Leg Number
+	CIsinStg X(12) Strategy Identification Code
+	ACpsCreStg S(40) Leg description aggregate
+		CIsinProdCps X(12) Underlying Identification Code
+		ARaoCps S(1) Leg ratio description aggregate
+			CSignKMuProdCps X(1) Component product multiplication coefficient sign
+			KRaoCpsStg 9(4) Leg number Ratio
+	IInOmStg X(1) Including Order Indicator
+	AInOmStg S(1) Order entry aggregate
+		YPLimSaiOm X(1) Type of Limit for an Order
+		PLimSaiOm S(1) Original Order Price
+			IFt X(1) Decimal point locator (AtosEuronext)
+			QMt 9(9) Amount
+		YValiOmNSC X(1) Validity Type of an Order
+		DVALIOM 9(8) Order validity date
+		TValiOm 9(6) Order Validity Duration
+		QTitDvlOm 9(12) Order Disclosed Quantity
+		QTitTotOm 9(12) Order Total Quantity
+		PDchOmStop S(1) Original Trigger Price
+			IFt X(1) Decimal point locator (AtosEuronext)
+			QMt 9(9) Amount
+		ISensOm X(1) Order Side
+		ADonCompOmAplKL S(1) KLSE Clearing data aggregate
+			CIdNgSaiOm X(8) ID of the trader that entered the order
+			YCpteOm X(1) Type of Clearing Account for Member that owns the order
+			NCptePosIptOm X(16) Client Account Number
+			CIdOmNg X(8) Trader Order Number (TON)
+			DHSaiOmAdf X(14) Order Entry Date and Time
+			CBIC S(1) BIC Code of the Member
+				CBq X(4) Bank Code
+				CPyMbr X(2) Country Code
+				CVilMbr X(2) Town Code
+				CSec X(3) Branch Code
+			LSaiOm X(18) Free text entered with order
+			CIdMbrDestGupOm X(8) ID of Clearing System Member that is the beneficiary of a give-up
+SLE0500K Client Amendment
+	LRfIntAdfMsg X(16) Internal Subscriber Reference
+	CFon 9(4) NSC Function Code
+	DSeaBs X(8) Trading Date
+	HSeaBs X(6) Trading Time
+	NSeqOm 9(6) Order Sequential Number
+	ISensOm X(1) Order Side
+	CIdNgSaiOm X(8) ID of the trader that entered the order
+	NCptePosIptOm X(16) New Client account number
+	NCptePosIptOmOrig X(16) Original Client account number
+	CValIsin X(12) Instrument Identification
+	CBIC S(1) BIC Code of the Member
+		CBank X(4) Bank Identifier Code
+		Country X(2) Country Code
+		CTown X(2) Town Code
+		CBranch X(3) Branch Code
+	CIdOmNg X(8) Trader Order Number (TON)
+	LSaiOm X(18) Free text entered with order
+	NCpteTraIptOrig X(9) Original Trading Client Id
+	HAckMess X(6) Acknowledgment time
+SLE0501K Client Amendment Notice
+	LRfIntAdfMsg X(16) Internal Subscriber Reference
+	CFon 9(4) NSC Function Code
+	DSeaBs X(8) Trading Date
+	HSeaBs X(6) Trading Time
+	NSeqOm 9(6) Order Sequential Number
+	ISensOm X(1) Order Side
+	CIdNgSaiOm X(8) ID of the trader that entered the order
+	NCptePosIptOm X(16) New Client account number
+	NCptePosIptOmOrig X(16) Original Client account number
+	CValIsin X(12) Instrument Identification
+	CBIC S(1) BIC Code of the Member
+		CBank X(4) Bank Identifier Code
+		Country X(2) Country Code
+		CTown X(2) Town Code
+		CBranch X(3) Branch Code
+	CIdOmNg X(8) Trader Order Number (TON)
+	LSaiOm X(18) Free text entered with order
+	NCpteTraIptOrig X(9) Original Trading Client Id
+	HAckMess X(6) Acknowledgment time
