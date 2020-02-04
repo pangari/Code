@@ -2,9 +2,6 @@
 
 #include <curl/curl.h>
 
-CURLcode url_to_socket(const char *url, SOCKET pipe, curl_write_callback onData, void* userData);
-CURLcode url_to_memory(const char *url, char** pHeadBuffer, size_t* pHeadSize, char** pBodyBuffer, size_t* pBodySize);
-
 #ifdef WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -119,13 +116,6 @@ int main(int argc, char **argv)
         {
             switch(*opt)
             {
-                
-            case 'h':
-                serverArgs.flags.HTTP = 1;
-                break;
-            case 'x':
-                serverArgs.flags.HTTPS = 1;
-                break;
             case 'l':
                 serverArgs.flags.RawLog = 1;
                 break;
@@ -358,30 +348,21 @@ void StreamServer(PSERVER_ARGS serverArgs)
             continue;
         }
 
-        if(!serverArgs->flags.HTTP && !serverArgs->flags.HTTPS)
-        {
-            threadDataOut = (PCLIENT_DATA)malloc(sizeof(CLIENT_DATA));
-            memcpy(threadDataOut, threadDataIn, sizeof(CLIENT_DATA));
-        }
+        threadDataOut = (PCLIENT_DATA)malloc(sizeof(CLIENT_DATA));
+        memcpy(threadDataOut, threadDataIn, sizeof(CLIENT_DATA));
 
 #ifdef WIN32
         thdHndle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)&ClientIncomingThreadProc, threadDataIn, 0, &threadId);
         CloseHandle(thdHndle);
 
-        if(!serverArgs->flags.HTTP && !serverArgs->flags.HTTPS)
-        {
-            thdHndle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)&ClientOutgoingThreadProc, threadDataOut, 0, &threadId);
-            CloseHandle(thdHndle);
-        }
+        thdHndle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)&ClientOutgoingThreadProc, threadDataOut, 0, &threadId);
+        CloseHandle(thdHndle);
 #else
         pthread_create(&thread, NULL, ClientIncomingThreadProc, threadDataIn);
         pthread_detach(thread);
 
-        if(!serverArgs->flags.HTTP && !serverArgs->flags.HTTPS)
-        {
-            pthread_create(&thread, NULL, ClientOutgoingThreadProc, threadDataOut);
-            pthread_detach(thread);
-        }
+        pthread_create(&thread, NULL, ClientOutgoingThreadProc, threadDataOut);
+        pthread_detach(thread);
 #endif
 
     }
@@ -441,7 +422,7 @@ void* ClientIncomingThreadProc(void* pVoid)
         if(gethostname(ProxyDesc2, sizeof(ProxyDesc2))) sprintf(ProxyDesc2, "127.0.0.1");
         diff2 = ((int)strlen(HostDesc2) - (int)strlen(ProxyDesc2));
     }
-    nCount = data->nRcvBuf * 4 + 1 + max(diff1, diff2);
+    nCount = data->nRcvBuf * 4 + 1 + (diff1 > diff2 ? diff1 : diff2);
 
     szBuffer = (char*)malloc(nCount+1);
     szRcvBuffer = (char*)malloc(data->nRcvBuf+1);
@@ -461,93 +442,6 @@ void* ClientIncomingThreadProc(void* pVoid)
         nRcvOffset += nRet;
         nRet = nRcvOffset;
         szRcvBuffer[nRet] = 0;
-
-        if(data->flags.HTTP || data->flags.HTTPS)
-        {
-            char* ptr = NULL;
-            while(ptr = (char*)memchr(szRcvBuffer, '\n', nRcvOffset))
-            {
-                ptr[0] = 0;
-                if((szRcvBuffer[0] == 'G' || szRcvBuffer[0] == 'g') &&
-                    (szRcvBuffer[1] == 'E' || szRcvBuffer[1] == 'e') &&
-                    (szRcvBuffer[2] == 'T' || szRcvBuffer[2] == 't') &&
-                    (szRcvBuffer[3] == ' '))
-                {
-                    char httpUrl[1024] = "http://";
-                    char httpsUrl[1024] = "https://";
-
-                    char *ptr, *url = &szRcvBuffer[4];
-
-                    while(*url == ' ') url++;
-                    if(ptr = strchr(url, ' ')) (*ptr) = 0;
-
-                    if(url[0] == '/')
-                    {
-                        if(data->flags.HTTP)
-                        {
-                            strcat(httpUrl, data->sHostName);
-                            if(data->nHostPort != 80)
-                            {
-                                sprintf(httpUrl+strlen(httpUrl), ":%d", data->nHostPort);
-                            }
-                            strcat(httpUrl, url);
-                            url = httpUrl;
-                        }
-                        else if(data->flags.HTTPS)
-                        {
-                            strcat(httpsUrl, data->sHostName);
-                            if(data->nHostPort != 443)
-                            {
-                                sprintf(httpsUrl+strlen(httpUrl), ":%d", data->nHostPort);
-                            }
-                            strcat(httpsUrl, url);
-                            url = httpsUrl;
-                        }
-                    }
-
-                    strcpy(URL, url);
-                }
-                else if(URL[0]  && (szRcvBuffer[0] == '\r') && (szRcvBuffer[1] == '\0'))
-                {
-                    LogInfo info = {&data->flags, data->outLog, DataOut, szBuffer};
-                    CURLcode retCode = CURLE_FAILED_INIT;
-#if 1
-                    retCode = url_to_socket(URL, data->remoteSocket, LogRawDataCallback, &info);
-#else
-                    {
-                        char* headBuffer = NULL;
-                        size_t headSize = 0;
-                        char* bodyBuffer = NULL;
-                        size_t bodySize = 0;
-
-                        retCode = url_to_memory(URL, &headBuffer, &headSize, &bodyBuffer, &bodySize);
-                        if(retCode == CURLE_OK)
-                        {
-                            SendBytes(data->remoteSocket, headBuffer, headSize);
-                            LogRawData(&data->flags, headBuffer, (int)headSize, data->outLog, DataOut, szBuffer);
-
-                            SendBytes(data->remoteSocket, bodyBuffer, bodySize);
-                            LogRawData(&data->flags, bodyBuffer, (int)bodySize, data->outLog, DataOut, szBuffer);
-
-                            free(headBuffer);
-                            free(bodyBuffer);
-                        }
-                    }
-#endif
-
-                    DoLoop = 0;
-                    break;
-                }
-
-                nProcessCount = (int)(nRet - ((ptr - szRcvBuffer) + 1));
-                if(nProcessCount > 0)
-                {
-                    memmove(szRcvBuffer, ptr+1, nProcessCount);
-                }
-                nRcvOffset -= (int)((ptr - szRcvBuffer) + 1);
-            }
-            continue;
-        }
 
         nRcvOffset = 0;
         if(data->flags.replaceHostName)
@@ -604,12 +498,6 @@ void* ClientIncomingThreadProc(void* pVoid)
     LogConnection(&data->flags, 0, data->szRemoteName, "INCOMING", stderr);
 
     if(data->inLog) fclose(data->inLog);
-
-    if(data->flags.HTTP || data->flags.HTTPS)
-    {
-        if(data->outLog) fclose(data->outLog);
-        if(data->glLog) fclose(data->glLog);
-    }
 
     // Close socket before exiting
 #ifdef WIN32
@@ -673,7 +561,7 @@ void* ClientOutgoingThreadProc(void* pVoid)
         if(gethostname(ProxyDesc2, sizeof(ProxyDesc2))) sprintf(ProxyDesc2, "127.0.0.1");
         diff2 = ((int)strlen(HostDesc2) - (int)strlen(ProxyDesc2));
     }
-    nCount = data->nSndBuf * 4 + 1 + max(diff1, diff2);
+    nCount = data->nSndBuf * 4 + 1 + (diff1 > diff2 ? diff1 : diff2);
 
     szBuffer = (char*)malloc(nCount+1);
     szSndBuffer = (char*)malloc(data->nSndBuf+1);
