@@ -1,6 +1,8 @@
 include ../Build/macros.tmpl
 APP=Proxy
 
+EXTRA_LDFLAGS=-static
+
 SRCS = $(wildcard *.c) \
 		$(wildcard aes/*.c) \
 		$(wildcard fish/*.c) \
