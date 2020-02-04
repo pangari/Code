@@ -4,9 +4,11 @@
 This file contains many of the definitions for parts of the FileGlobBase
 class.
 **/
-#include "FileGlobBase.h"
+#include "FileGlobBase.H"
+
 #include <assert.h>
 #include <ctype.h>
+#include <string.h>
 
 // Forward declares.
 bool WildMatch( const char* pattern, const char *string, bool caseSensitive );

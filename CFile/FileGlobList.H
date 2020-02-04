@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "FileGlobBase.h"
+#include "FileGlobBase.H"
 
 /**
 Provides a storage list for all found files.

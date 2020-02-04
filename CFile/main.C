@@ -1,5 +1,5 @@
-#include <ConvertString.h>
-#include <FileGlobList.h>
+#include <ConvertString.H>
+#include <FileGlobList.H>
 #include <CFile_Cksum_C.h>
 
 #include <ctype.h>
