@@ -1,4 +1,4 @@
-#include "codage.h"
+#include "codage.H"
 
 int DecodeI2( unsigned char *Source)
 {

@@ -19,8 +19,8 @@
 #include <pthread.h>
 #endif
 
-#include <codage.h>
-#include <ConvertString.h>
+#include <codage.H>
+#include <ConvertString.H>
 
 // Function prototype
 void DatagramServer(char* szBroadcastAddres, short nPort, char* szDataFile, int nTempo, int nRecord, int nBinary);

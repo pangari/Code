@@ -18,7 +18,7 @@
 #include <pthread.h>
 #endif
 
-#include <codage.h>
+#include <codage.H>
 
 // Function prototype
 void StreamServer(short nPort, int nTempo);

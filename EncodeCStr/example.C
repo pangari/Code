@@ -1,4 +1,4 @@
-#include "EncodeCStr.h"
+#include "EncodeCStr.H"
 
 #include <stdio.h>
 #include <stdlib.h>

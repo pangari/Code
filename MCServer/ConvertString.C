@@ -1,4 +1,4 @@
-#include "ConvertString.h"
+#include "ConvertString.H"
 #include <stdlib.h>
 
 typedef struct _character_conversion

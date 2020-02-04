@@ -22,8 +22,8 @@
 #include <signal.h>
 #endif
 
-#include <codage.h>
-#include <ConvertString.h>
+#include <codage.H>
+#include <ConvertString.H>
 
 #ifdef WIN32
 CRITICAL_SECTION lock;

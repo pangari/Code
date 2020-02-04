@@ -20,8 +20,8 @@
 #include <pthread.h>
 #endif
 
-#include <codage.h>
-#include <ConvertString.h>
+#include <codage.H>
+#include <ConvertString.H>
 
 // Function prototype
 void MulticastServer(char* szBroadcastAddres, char* szDataFile, int nSndBuf, int nRcvBuf, int nTempo, int nRecord, int nBinary);
