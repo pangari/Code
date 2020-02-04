@@ -43,7 +43,6 @@ private:
     bool enableHintsCallback;
     bool rawmode;
     bool mlmode;
-    char padding[4];
 
 public:
     char *Prompt(const char *prompt);

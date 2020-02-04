@@ -55,12 +55,8 @@ LineNoise::LineNoise()
     , enableHintsCallback(false)
     , rawmode(false)
     , mlmode(false)
-    , padding{}
 {
     memset(&orig_termios, 0, sizeof(orig_termios));
-    (void)padding;
-
-    static_assert(sizeof(LineNoise) == 104, "");
 }
 
 LineNoise::~LineNoise() { FreeHistory(); }
@@ -82,13 +78,10 @@ struct State
     size_t cols;        /* Number of columns in terminal. */
     size_t maxrows;     /* Maximum num of rows used so far (multiline mode) */
     int history_index;  /* The history index we are currently editing. */
-    char padding[4];
 
     State()
     {
         memset(this, 0, sizeof(*this));
-
-        static_assert(sizeof(State) == 88, "");
     }
 };
 

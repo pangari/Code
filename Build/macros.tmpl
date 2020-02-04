@@ -1,18 +1,17 @@
 override ARCH=x86_64
-#override COMPILER=gcc740
-override COMPILER=gcc920
+#override COMPILER=gcc
 #override COMPILER=clang
 #override CPPCHECK=0
 override VERBOSE=1
 override CONF=debug
 
 SELF_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
-override WORKROOT=$(shell /usr/local/bin/greadlink -f $(SELF_DIR)..)
+override WORKROOT=$(shell /usr/bin/readlink -f $(SELF_DIR)..)
 WORKROOT_CALCULATED=true
 MAKEFLAGS += -j4
 
 # Default SDK and compiler
-DEFCOMP:=clang
+DEFCOMP:=gcc
 
 # input a path; retuLOCAL_OUTDIRrns 'missing' or 'found'
 file_exists=$(shell ls -d $(1) 2> /dev/null | wc -l | sed 's/^[ ]*//' | sed 's/0/missing/' | sed 's/[0-9]*/found/')
@@ -37,7 +36,7 @@ SPECIAL_CFLAGS=
 SPECIAL_LDFLAGS=
 
 # Can override to cross-compile 32-bit code on 64-bit machines.
-ARCH:=$(shell arch)
+ARCH:=$(shell uname -p)
 if64=$(if $(findstring x86_64,$(ARCH)),$(1),$(2))
 
 ifeq ($(USER),wwwrun)
@@ -46,35 +45,14 @@ else
 	LLVM_COLOR=-fcolor-diagnostics
 endif
 
-ifneq (,$(findstring $(COMPILER),gcc920))
+ifneq (,$(findstring $(COMPILER),gcc))
 	SPECIAL_CFLAGS=
 	SPECIAL_LDFLAGS=
 
-	BASEDIR:=/usr/local/Cellar/gcc/9.2.0_3
+	BASEDIR:=/usr
 	COMPDIR:=$(BASEDIR)
 
-	CCACHE_BIN:=/usr/local/bin/ccache
-	CCACHE_DIR:=$(WORKROOT)/.ccache/$(USER)
-
-	CC_BIN:=$(COMPDIR)/bin/gcc-9
-	CXX_BIN:=$(COMPDIR)/bin/g++-9
-	LD_BIN:=$(COMPDIR)/bin/g++-9
-
-	CC:=CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) $(CC_BIN)
-	CXX:=CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) $(CXX_BIN)
-	LD:=CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) $(LD_BIN)
-	AR:=/usr/bin/ar cruv
-	RANLIB:=/usr/bin/ranlib
-	GDB:=/usr/local/bin/gdb
-else
-ifneq (,$(findstring $(COMPILER),gcc740))
-	SPECIAL_CFLAGS=
-	SPECIAL_LDFLAGS=
-
-	BASEDIR:=/opt/pkg/gcc7
-	COMPDIR:=$(BASEDIR)
-
-	CCACHE_BIN:=/opt/pkg/bin/ccache
+	CCACHE_BIN:=/usr/bin/ccache
 	CCACHE_DIR:=$(WORKROOT)/.ccache/$(USER)
 
 	CC_BIN:=$(COMPDIR)/bin/gcc
@@ -86,7 +64,7 @@ ifneq (,$(findstring $(COMPILER),gcc740))
 	LD:=CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) $(LD_BIN)
 	AR:=/usr/bin/ar cruv
 	RANLIB:=/usr/bin/ranlib
-	GDB:=/opt/pkg/bin/gdb
+	GDB:=/usr/bin/gdb
 else
 ifneq (,$(findstring $(COMPILER),clang))
 	SPECIAL_CFLAGS=
@@ -94,9 +72,8 @@ ifneq (,$(findstring $(COMPILER),clang))
 
 	BASEDIR:=/usr
 	COMPDIR:=$(BASEDIR)
-	GDBDIR:=/usr/local
 
-	CCACHE_BIN:=/usr/local/bin/ccache
+	CCACHE_BIN:=/usr/bin/ccache
 	CCACHE_DIR:=$(WORKROOT)/.ccache/$(USER)
 
 	CC_BIN:=$(COMPDIR)/bin/clang
@@ -111,11 +88,10 @@ ifneq (,$(findstring $(COMPILER),clang))
 	LD:=CCACHE_DIR=$(CCACHE_DIR) $(CCACHE_BIN) $(LD_BIN) -Qunused-arguments $(LLVM_COLOR)
 	AR:=/usr/bin/ar cruv
 	RANLIB:=/usr/bin/ranlib
-	GDB:=/usr/local/bin/gdb
+	GDB:=/usr/bin/gdb
 else
 	IGNORE:=$(shell printf "*** Unsupported compiler: [$(COMPILER)]\n" > $(shell tty))
 	$(error)
-endif
 endif
 endif
 
@@ -188,7 +164,7 @@ BUILDROOT?=$(WORKROOT)/.build/$(USER)
 BUILDROOT_CONF=$(BUILDROOT)/$(subst -,/,$(TAG))
 
 # Per-WORKROOT libraries build path.
-ABSROOT:=$(shell /usr/local/bin/greadlink -f $(WORKROOT))
+ABSROOT:=$(shell /usr/bin/readlink -f $(WORKROOT))
 LIBDIR=$(BUILDROOT_CONF)/lib$(ABSROOT)
 
 # Links will be created here.

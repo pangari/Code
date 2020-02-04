@@ -1,3 +1,12 @@
+#define VERBOSE=1
+
+#include "ArgV.H"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
 const struct argv_test {
     const char *cmdline;
     const char *argv[10];
@@ -6,97 +15,99 @@ const struct argv_test {
      * We generate this set of tests by invoking ourself with
      * `-generate'.
      */
-    {"ab c\" d", {"ab", "c d", NULL}},
-    {"a\"b c\" d", {"ab c", "d", NULL}},
-    {"a\"\"b c\" d", {"ab", "c d", NULL}},
-    {"a\"\"\"b c\" d", {"a\"b", "c d", NULL}},
-    {"a\"\"\"\"b c\" d", {"a\"b c", "d", NULL}},
-    {"a\"\"\"\"\"b c\" d", {"a\"b", "c d", NULL}},
-    {"a\"\"\"\"\"\"b c\" d", {"a\"\"b", "c d", NULL}},
-    {"a\"\"\"\"\"\"\"b c\" d", {"a\"\"b c", "d", NULL}},
-    {"a\"\"\"\"\"\"\"\"b c\" d", {"a\"\"b", "c d", NULL}},
-    {"a\\b c\" d", {"a\\b", "c d", NULL}},
-    {"a\\\"b c\" d", {"a\"b", "c d", NULL}},
-    {"a\\\"\"b c\" d", {"a\"b c", "d", NULL}},
-    {"a\\\"\"\"b c\" d", {"a\"b", "c d", NULL}},
-    {"a\\\"\"\"\"b c\" d", {"a\"\"b", "c d", NULL}},
-    {"a\\\"\"\"\"\"b c\" d", {"a\"\"b c", "d", NULL}},
-    {"a\\\"\"\"\"\"\"b c\" d", {"a\"\"b", "c d", NULL}},
-    {"a\\\"\"\"\"\"\"\"b c\" d", {"a\"\"\"b", "c d", NULL}},
-    {"a\\\"\"\"\"\"\"\"\"b c\" d", {"a\"\"\"b c", "d", NULL}},
-    {"a\\\\b c\" d", {"a\\\\b", "c d", NULL}},
-    {"a\\\\\"b c\" d", {"a\\b c", "d", NULL}},
-    {"a\\\\\"\"b c\" d", {"a\\b", "c d", NULL}},
-    {"a\\\\\"\"\"b c\" d", {"a\\\"b", "c d", NULL}},
-    {"a\\\\\"\"\"\"b c\" d", {"a\\\"b c", "d", NULL}},
-    {"a\\\\\"\"\"\"\"b c\" d", {"a\\\"b", "c d", NULL}},
-    {"a\\\\\"\"\"\"\"\"b c\" d", {"a\\\"\"b", "c d", NULL}},
-    {"a\\\\\"\"\"\"\"\"\"b c\" d", {"a\\\"\"b c", "d", NULL}},
-    {"a\\\\\"\"\"\"\"\"\"\"b c\" d", {"a\\\"\"b", "c d", NULL}},
-    {"a\\\\\\b c\" d", {"a\\\\\\b", "c d", NULL}},
-    {"a\\\\\\\"b c\" d", {"a\\\"b", "c d", NULL}},
-    {"a\\\\\\\"\"b c\" d", {"a\\\"b c", "d", NULL}},
-    {"a\\\\\\\"\"\"b c\" d", {"a\\\"b", "c d", NULL}},
-    {"a\\\\\\\"\"\"\"b c\" d", {"a\\\"\"b", "c d", NULL}},
-    {"a\\\\\\\"\"\"\"\"b c\" d", {"a\\\"\"b c", "d", NULL}},
-    {"a\\\\\\\"\"\"\"\"\"b c\" d", {"a\\\"\"b", "c d", NULL}},
-    {"a\\\\\\\"\"\"\"\"\"\"b c\" d", {"a\\\"\"\"b", "c d", NULL}},
-    {"a\\\\\\\"\"\"\"\"\"\"\"b c\" d", {"a\\\"\"\"b c", "d", NULL}},
-    {"a\\\\\\\\b c\" d", {"a\\\\\\\\b", "c d", NULL}},
-    {"a\\\\\\\\\"b c\" d", {"a\\\\b c", "d", NULL}},
-    {"a\\\\\\\\\"\"b c\" d", {"a\\\\b", "c d", NULL}},
-    {"a\\\\\\\\\"\"\"b c\" d", {"a\\\\\"b", "c d", NULL}},
-    {"a\\\\\\\\\"\"\"\"b c\" d", {"a\\\\\"b c", "d", NULL}},
-    {"a\\\\\\\\\"\"\"\"\"b c\" d", {"a\\\\\"b", "c d", NULL}},
-    {"a\\\\\\\\\"\"\"\"\"\"b c\" d", {"a\\\\\"\"b", "c d", NULL}},
-    {"a\\\\\\\\\"\"\"\"\"\"\"b c\" d", {"a\\\\\"\"b c", "d", NULL}},
-    {"a\\\\\\\\\"\"\"\"\"\"\"\"b c\" d", {"a\\\\\"\"b", "c d", NULL}},
-    {"\"ab c\" d", {"ab c", "d", NULL}},
-    {"\"a\"b c\" d", {"ab", "c d", NULL}},
-    {"\"a\"\"b c\" d", {"a\"b", "c d", NULL}},
-    {"\"a\"\"\"b c\" d", {"a\"b c", "d", NULL}},
-    {"\"a\"\"\"\"b c\" d", {"a\"b", "c d", NULL}},
-    {"\"a\"\"\"\"\"b c\" d", {"a\"\"b", "c d", NULL}},
-    {"\"a\"\"\"\"\"\"b c\" d", {"a\"\"b c", "d", NULL}},
-    {"\"a\"\"\"\"\"\"\"b c\" d", {"a\"\"b", "c d", NULL}},
-    {"\"a\"\"\"\"\"\"\"\"b c\" d", {"a\"\"\"b", "c d", NULL}},
-    {"\"a\\b c\" d", {"a\\b c", "d", NULL}},
-    {"\"a\\\"b c\" d", {"a\"b c", "d", NULL}},
-    {"\"a\\\"\"b c\" d", {"a\"b", "c d", NULL}},
-    {"\"a\\\"\"\"b c\" d", {"a\"\"b", "c d", NULL}},
-    {"\"a\\\"\"\"\"b c\" d", {"a\"\"b c", "d", NULL}},
-    {"\"a\\\"\"\"\"\"b c\" d", {"a\"\"b", "c d", NULL}},
-    {"\"a\\\"\"\"\"\"\"b c\" d", {"a\"\"\"b", "c d", NULL}},
-    {"\"a\\\"\"\"\"\"\"\"b c\" d", {"a\"\"\"b c", "d", NULL}},
-    {"\"a\\\"\"\"\"\"\"\"\"b c\" d", {"a\"\"\"b", "c d", NULL}},
-    {"\"a\\\\b c\" d", {"a\\\\b c", "d", NULL}},
-    {"\"a\\\\\"b c\" d", {"a\\b", "c d", NULL}},
-    {"\"a\\\\\"\"b c\" d", {"a\\\"b", "c d", NULL}},
-    {"\"a\\\\\"\"\"b c\" d", {"a\\\"b c", "d", NULL}},
-    {"\"a\\\\\"\"\"\"b c\" d", {"a\\\"b", "c d", NULL}},
-    {"\"a\\\\\"\"\"\"\"b c\" d", {"a\\\"\"b", "c d", NULL}},
-    {"\"a\\\\\"\"\"\"\"\"b c\" d", {"a\\\"\"b c", "d", NULL}},
-    {"\"a\\\\\"\"\"\"\"\"\"b c\" d", {"a\\\"\"b", "c d", NULL}},
-    {"\"a\\\\\"\"\"\"\"\"\"\"b c\" d", {"a\\\"\"\"b", "c d", NULL}},
-    {"\"a\\\\\\b c\" d", {"a\\\\\\b c", "d", NULL}},
-    {"\"a\\\\\\\"b c\" d", {"a\\\"b c", "d", NULL}},
-    {"\"a\\\\\\\"\"b c\" d", {"a\\\"b", "c d", NULL}},
-    {"\"a\\\\\\\"\"\"b c\" d", {"a\\\"\"b", "c d", NULL}},
-    {"\"a\\\\\\\"\"\"\"b c\" d", {"a\\\"\"b c", "d", NULL}},
-    {"\"a\\\\\\\"\"\"\"\"b c\" d", {"a\\\"\"b", "c d", NULL}},
-    {"\"a\\\\\\\"\"\"\"\"\"b c\" d", {"a\\\"\"\"b", "c d", NULL}},
-    {"\"a\\\\\\\"\"\"\"\"\"\"b c\" d", {"a\\\"\"\"b c", "d", NULL}},
-    {"\"a\\\\\\\"\"\"\"\"\"\"\"b c\" d", {"a\\\"\"\"b", "c d", NULL}},
-    {"\"a\\\\\\\\b c\" d", {"a\\\\\\\\b c", "d", NULL}},
-    {"\"a\\\\\\\\\"b c\" d", {"a\\\\b", "c d", NULL}},
-    {"\"a\\\\\\\\\"\"b c\" d", {"a\\\\\"b", "c d", NULL}},
-    {"\"a\\\\\\\\\"\"\"b c\" d", {"a\\\\\"b c", "d", NULL}},
-    {"\"a\\\\\\\\\"\"\"\"b c\" d", {"a\\\\\"b", "c d", NULL}},
-    {"\"a\\\\\\\\\"\"\"\"\"b c\" d", {"a\\\\\"\"b", "c d", NULL}},
-    {"\"a\\\\\\\\\"\"\"\"\"\"b c\" d", {"a\\\\\"\"b c", "d", NULL}},
-    {"\"a\\\\\\\\\"\"\"\"\"\"\"b c\" d", {"a\\\\\"\"b", "c d", NULL}},
-    {"\"a\\\\\\\\\"\"\"\"\"\"\"\"b c\" d", {"a\\\\\"\"\"b", "c d", NULL}},
+    {"ab c\" d", {"ab", "c d", nullptr}},
+    {"a\"b c\" d", {"ab c", "d", nullptr}},
+    {"a\"\"b c\" d", {"ab", "c d", nullptr}},
+    {"a\"\"\"b c\" d", {"a\"b", "c d", nullptr}},
+    {"a\"\"\"\"b c\" d", {"a\"b c", "d", nullptr}},
+    {"a\"\"\"\"\"b c\" d", {"a\"b", "c d", nullptr}},
+    {"a\"\"\"\"\"\"b c\" d", {"a\"\"b", "c d", nullptr}},
+    {"a\"\"\"\"\"\"\"b c\" d", {"a\"\"b c", "d", nullptr}},
+    {"a\"\"\"\"\"\"\"\"b c\" d", {"a\"\"b", "c d", nullptr}},
+    {"a\\b c\" d", {"a\\b", "c d", nullptr}},
+    {"a\\\"b c\" d", {"a\"b", "c d", nullptr}},
+    {"a\\\"\"b c\" d", {"a\"b c", "d", nullptr}},
+    {"a\\\"\"\"b c\" d", {"a\"b", "c d", nullptr}},
+    {"a\\\"\"\"\"b c\" d", {"a\"\"b", "c d", nullptr}},
+    {"a\\\"\"\"\"\"b c\" d", {"a\"\"b c", "d", nullptr}},
+    {"a\\\"\"\"\"\"\"b c\" d", {"a\"\"b", "c d", nullptr}},
+    {"a\\\"\"\"\"\"\"\"b c\" d", {"a\"\"\"b", "c d", nullptr}},
+    {"a\\\"\"\"\"\"\"\"\"b c\" d", {"a\"\"\"b c", "d", nullptr}},
+    {"a\\\\b c\" d", {"a\\\\b", "c d", nullptr}},
+    {"a\\\\\"b c\" d", {"a\\b c", "d", nullptr}},
+    {"a\\\\\"\"b c\" d", {"a\\b", "c d", nullptr}},
+    {"a\\\\\"\"\"b c\" d", {"a\\\"b", "c d", nullptr}},
+    {"a\\\\\"\"\"\"b c\" d", {"a\\\"b c", "d", nullptr}},
+    {"a\\\\\"\"\"\"\"b c\" d", {"a\\\"b", "c d", nullptr}},
+    {"a\\\\\"\"\"\"\"\"b c\" d", {"a\\\"\"b", "c d", nullptr}},
+    {"a\\\\\"\"\"\"\"\"\"b c\" d", {"a\\\"\"b c", "d", nullptr}},
+    {"a\\\\\"\"\"\"\"\"\"\"b c\" d", {"a\\\"\"b", "c d", nullptr}},
+    {"a\\\\\\b c\" d", {"a\\\\\\b", "c d", nullptr}},
+    {"a\\\\\\\"b c\" d", {"a\\\"b", "c d", nullptr}},
+    {"a\\\\\\\"\"b c\" d", {"a\\\"b c", "d", nullptr}},
+    {"a\\\\\\\"\"\"b c\" d", {"a\\\"b", "c d", nullptr}},
+    {"a\\\\\\\"\"\"\"b c\" d", {"a\\\"\"b", "c d", nullptr}},
+    {"a\\\\\\\"\"\"\"\"b c\" d", {"a\\\"\"b c", "d", nullptr}},
+    {"a\\\\\\\"\"\"\"\"\"b c\" d", {"a\\\"\"b", "c d", nullptr}},
+    {"a\\\\\\\"\"\"\"\"\"\"b c\" d", {"a\\\"\"\"b", "c d", nullptr}},
+    {"a\\\\\\\"\"\"\"\"\"\"\"b c\" d", {"a\\\"\"\"b c", "d", nullptr}},
+    {"a\\\\\\\\b c\" d", {"a\\\\\\\\b", "c d", nullptr}},
+    {"a\\\\\\\\\"b c\" d", {"a\\\\b c", "d", nullptr}},
+    {"a\\\\\\\\\"\"b c\" d", {"a\\\\b", "c d", nullptr}},
+    {"a\\\\\\\\\"\"\"b c\" d", {"a\\\\\"b", "c d", nullptr}},
+    {"a\\\\\\\\\"\"\"\"b c\" d", {"a\\\\\"b c", "d", nullptr}},
+    {"a\\\\\\\\\"\"\"\"\"b c\" d", {"a\\\\\"b", "c d", nullptr}},
+    {"a\\\\\\\\\"\"\"\"\"\"b c\" d", {"a\\\\\"\"b", "c d", nullptr}},
+    {"a\\\\\\\\\"\"\"\"\"\"\"b c\" d", {"a\\\\\"\"b c", "d", nullptr}},
+    {"a\\\\\\\\\"\"\"\"\"\"\"\"b c\" d", {"a\\\\\"\"b", "c d", nullptr}},
+    {"\"ab c\" d", {"ab c", "d", nullptr}},
+    {"\"a\"b c\" d", {"ab", "c d", nullptr}},
+    {"\"a\"\"b c\" d", {"a\"b", "c d", nullptr}},
+    {"\"a\"\"\"b c\" d", {"a\"b c", "d", nullptr}},
+    {"\"a\"\"\"\"b c\" d", {"a\"b", "c d", nullptr}},
+    {"\"a\"\"\"\"\"b c\" d", {"a\"\"b", "c d", nullptr}},
+    {"\"a\"\"\"\"\"\"b c\" d", {"a\"\"b c", "d", nullptr}},
+    {"\"a\"\"\"\"\"\"\"b c\" d", {"a\"\"b", "c d", nullptr}},
+    {"\"a\"\"\"\"\"\"\"\"b c\" d", {"a\"\"\"b", "c d", nullptr}},
+    {"\"a\\b c\" d", {"a\\b c", "d", nullptr}},
+    {"\"a\\\"b c\" d", {"a\"b c", "d", nullptr}},
+    {"\"a\\\"\"b c\" d", {"a\"b", "c d", nullptr}},
+    {"\"a\\\"\"\"b c\" d", {"a\"\"b", "c d", nullptr}},
+    {"\"a\\\"\"\"\"b c\" d", {"a\"\"b c", "d", nullptr}},
+    {"\"a\\\"\"\"\"\"b c\" d", {"a\"\"b", "c d", nullptr}},
+    {"\"a\\\"\"\"\"\"\"b c\" d", {"a\"\"\"b", "c d", nullptr}},
+    {"\"a\\\"\"\"\"\"\"\"b c\" d", {"a\"\"\"b c", "d", nullptr}},
+    {"\"a\\\"\"\"\"\"\"\"\"b c\" d", {"a\"\"\"b", "c d", nullptr}},
+    {"\"a\\\\b c\" d", {"a\\\\b c", "d", nullptr}},
+    {"\"a\\\\\"b c\" d", {"a\\b", "c d", nullptr}},
+    {"\"a\\\\\"\"b c\" d", {"a\\\"b", "c d", nullptr}},
+    {"\"a\\\\\"\"\"b c\" d", {"a\\\"b c", "d", nullptr}},
+    {"\"a\\\\\"\"\"\"b c\" d", {"a\\\"b", "c d", nullptr}},
+    {"\"a\\\\\"\"\"\"\"b c\" d", {"a\\\"\"b", "c d", nullptr}},
+    {"\"a\\\\\"\"\"\"\"\"b c\" d", {"a\\\"\"b c", "d", nullptr}},
+    {"\"a\\\\\"\"\"\"\"\"\"b c\" d", {"a\\\"\"b", "c d", nullptr}},
+    {"\"a\\\\\"\"\"\"\"\"\"\"b c\" d", {"a\\\"\"\"b", "c d", nullptr}},
+    {"\"a\\\\\\b c\" d", {"a\\\\\\b c", "d", nullptr}},
+    {"\"a\\\\\\\"b c\" d", {"a\\\"b c", "d", nullptr}},
+    {"\"a\\\\\\\"\"b c\" d", {"a\\\"b", "c d", nullptr}},
+    {"\"a\\\\\\\"\"\"b c\" d", {"a\\\"\"b", "c d", nullptr}},
+    {"\"a\\\\\\\"\"\"\"b c\" d", {"a\\\"\"b c", "d", nullptr}},
+    {"\"a\\\\\\\"\"\"\"\"b c\" d", {"a\\\"\"b", "c d", nullptr}},
+    {"\"a\\\\\\\"\"\"\"\"\"b c\" d", {"a\\\"\"\"b", "c d", nullptr}},
+    {"\"a\\\\\\\"\"\"\"\"\"\"b c\" d", {"a\\\"\"\"b c", "d", nullptr}},
+    {"\"a\\\\\\\"\"\"\"\"\"\"\"b c\" d", {"a\\\"\"\"b", "c d", nullptr}},
+    {"\"a\\\\\\\\b c\" d", {"a\\\\\\\\b c", "d", nullptr}},
+    {"\"a\\\\\\\\\"b c\" d", {"a\\\\b", "c d", nullptr}},
+    {"\"a\\\\\\\\\"\"b c\" d", {"a\\\\\"b", "c d", nullptr}},
+    {"\"a\\\\\\\\\"\"\"b c\" d", {"a\\\\\"b c", "d", nullptr}},
+    {"\"a\\\\\\\\\"\"\"\"b c\" d", {"a\\\\\"b", "c d", nullptr}},
+    {"\"a\\\\\\\\\"\"\"\"\"b c\" d", {"a\\\\\"\"b", "c d", nullptr}},
+    {"\"a\\\\\\\\\"\"\"\"\"\"b c\" d", {"a\\\\\"\"b c", "d", nullptr}},
+    {"\"a\\\\\\\\\"\"\"\"\"\"\"b c\" d", {"a\\\\\"\"b", "c d", nullptr}},
+    {"\"a\\\\\\\\\"\"\"\"\"\"\"\"b c\" d", {"a\\\\\"\"\"b", "c d", nullptr}},
 };
+
+#define lenof(arr) sizeof(arr) / sizeof(arr[0])
 
 int main(int argc, char **argv)
 {
@@ -108,7 +119,7 @@ int main(int argc, char **argv)
 	 * 
 	 * Given `-splat <args>', we print out a C-style
 	 * representation of each argument (in the form "a", "b",
-	 * NULL), backslash-escaping each backslash and double
+	 * nullptr), backslash-escaping each backslash and double
 	 * quote.
 	 * 
 	 * Given `-split <string>', we first doctor `string' by
@@ -133,12 +144,12 @@ int main(int argc, char **argv)
 		}
 		printf("\", ");
 	    }
-	    printf("NULL");
+	    printf("nullptr");
 	    return 0;
 	}
 
 	if (!strcmp(argv[1], "-split") && argc > 2) {
-	    char *str = malloc(20 + strlen(argv[0]) + strlen(argv[2]));
+	    char *str = (char*)malloc(20 + strlen(argv[0]) + strlen(argv[2]));
 	    char *p, *q;
 
 	    q = str + sprintf(str, "%s -splat ", argv[0]);
@@ -166,7 +177,7 @@ int main(int argc, char **argv)
 	    char *teststr, *p;
 	    int i, initialquote, backslashes, quotes;
 
-	    teststr = malloc(200 + strlen(argv[0]));
+	    teststr = (char*)malloc(200 + strlen(argv[0]));
 
 	    for (initialquote = 0; initialquote <= 1; initialquote++) {
 		for (backslashes = 0; backslashes < 5; backslashes++) {
@@ -184,7 +195,7 @@ int main(int argc, char **argv)
 			*p++ = 'd';
 			*p = '\0';
 
-			system(teststr);
+			printf("[%s]\n", teststr);
 		    }
 		}
 	    }
@@ -204,7 +215,7 @@ int main(int argc, char **argv)
 	int ac;
 	char **av;
 
-	split_into_argv(argv_tests[i].cmdline, &ac, &av);
+	SplitIntoArgV(argv_tests[i].cmdline, ac, &av);
 
 	for (j = 0; j < ac && argv_tests[i].argv[j]; j++) {
 	    if (strcmp(av[j], argv_tests[i].argv[j])) {

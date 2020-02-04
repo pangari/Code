@@ -57,5 +57,7 @@ compile_commands.json
 *.includes
 *.config
 darwin-*
+linux-*
 .ccache
 .build
+.vscode
