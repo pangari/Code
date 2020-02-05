@@ -1,4 +1,4 @@
-#include "HashTable.h"
+#include "HashTable.H"
 
 chtbl_exhandler gHtblHdlr = NULL;
 

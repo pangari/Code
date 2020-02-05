@@ -1011,7 +1011,7 @@ if (*endptr != 0)   /* Error */
   {
   if (longop)
     {
-    char *equals = strchr(op->long_name, '=');
+    const char *equals = strchr(op->long_name, '=');
     int nlen = (equals == NULL)? (int)strlen(op->long_name) :
       (int)(equals - op->long_name);
     fprintf(stderr, "pcregrep: Malformed number \"%s\" after --%.*s\n",
@@ -2655,7 +2655,7 @@ return TRUE;
 /* Returns 0 if something matched, 1 if nothing matched, 2 after an error. */
 
 int
-main(int argc, char **argv)
+PCREGrep(int argc, char **argv)
 {
 int i, j;
 int rc = 1;
@@ -2729,8 +2729,8 @@ for (i = 1; i < argc; i++)
 
     for (op = optionlist; op->one_char != 0; op++)
       {
-      char *opbra = strchr(op->long_name, '(');
-      char *equals = strchr(op->long_name, '=');
+      const char *opbra = strchr(op->long_name, '(');
+      const char *equals = strchr(op->long_name, '=');
 
       /* Handle options with only one spelling of the name */
 
@@ -3350,9 +3350,9 @@ free_file_chain(file_lists);
 
 while (only_matching != NULL)
   {
-  omstr *this = only_matching;
-  only_matching = this->next;
-  free(this);
+  omstr *pThis = only_matching;
+  only_matching = pThis->next;
+  free(pThis);
   }
 
 pcregrep_exit(rc);

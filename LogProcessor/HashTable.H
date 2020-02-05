@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "LinkList.h"
+#include "LinkList.H"
 
 /*
  * public structs

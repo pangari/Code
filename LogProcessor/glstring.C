@@ -1,4 +1,4 @@
-#include "glstring.hpp"
+#include "glstring.H"
 
 #include <cstdio>
 #include <cctype>

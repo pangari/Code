@@ -2,7 +2,7 @@
 #include "GetPasswd.h"
 #include "crypt.h"
 
-#include <lzo.h>
+#include <lzo/lzo.h>
 
 #ifdef WIN32
 #include <winsock2.h>

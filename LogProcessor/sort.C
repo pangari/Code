@@ -19,9 +19,9 @@ Written December 1988 by Mike Haertel.
 The author may be reached (Email) at the address mike@gnu.ai.mit.edu,
 or (US mail) as Mike Haertel c/o Free Software Foundation.
 
-Ørn E. Hansen added NLS support in 1997.  */
+ï¿½rn E. Hansen added NLS support in 1997.  */
 
-#include <config.h>
+#include "pcre/inc/config.h"
 
 #include <sys/stat.h>
 #include <sys/types.h>

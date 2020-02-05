@@ -162,8 +162,8 @@ external symbols to prevent clashes. */
 
 #define PCRE_INCLUDED
 
-#include "pcre_tables.c"
-#include "pcre_ucd.c"
+#include "../src/pcre_tables.c"
+#include "../src/pcre_ucd.c"
 
 /* The definition of the macro PRINTABLE, which determines whether to print an
 output character as-is or as a hex value when showing compiled patterns, is
@@ -2983,7 +2983,7 @@ printf("  -TM      same as -tm, but show total time at the end\n");
 consist of a regular expression, in delimiters and optionally followed by
 options, followed by a set of test data, terminated by an empty line. */
 
-int main(int argc, char **argv)
+int PCRETest(int argc, char **argv)
 {
 FILE *infile = stdin;
 const char *version;
@@ -5048,7 +5048,7 @@ while (!done)
 #ifdef SUPPORT_VALGRIND
       VALGRIND_MAKE_MEM_NOACCESS(dbuffer + len * CHAR_SIZE, (dbuffer_size - len) * CHAR_SIZE);
 #else
-      bptr = memmove(bptr + (dbuffer_size - len) * CHAR_SIZE, bptr, len * CHAR_SIZE);
+      bptr = (pcre_uint8*)memmove(bptr + (dbuffer_size - len) * CHAR_SIZE, bptr, len * CHAR_SIZE);
 #endif
       }
 

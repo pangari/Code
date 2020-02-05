@@ -10,11 +10,11 @@
 #include <windows.h>
 #endif
 
-#include "HashTable.h"
-#include "lookup3.h"
-#include "config.h"
-#include "pcre_internal.h"
-#include "glstring.hpp"
+#include "HashTable.H"
+#include "lookup3.H"
+#include "pcre/inc/config.h"
+#include "pcre/inc/pcre_internal.h"
+#include "glstring.H"
 
 int no_decoration = 0;
 int full_line = 0;
@@ -76,9 +76,15 @@ extern "C" {
 }  /* extern "C" */
 #endif
 #else
-int PCRETest(int argc, char **argv);
-int PCREGrep(int argc, char **argv);
-int DFTables(int argc, char **argv);
+#ifdef __cplusplus
+extern "C" {
+#endif
+    int PCRETest(int argc, char **argv);
+    int PCREGrep(int argc, char **argv);
+    int DFTables(int argc, char **argv);
+#ifdef __cplusplus
+}  /* extern "C" */
+#endif
 int TailMain(int argc, char **argv);
 int WcMain(int argc, char **argv);
 int UniqMain(int argc, char **argv);
@@ -86,6 +92,16 @@ int SortMain(int argc, char **argv);
 int HashMain(int argc, char **argv);
 unsigned long int byteflip(unsigned long int value, int n);
 #endif
+
+unsigned long int
+byteflip(unsigned long int value, int n)
+{
+if (n == 2) return ((value & 0x00ff) << 8) | ((value & 0xff00) >> 8);
+return ((value & 0x000000ff) << 24) |
+       ((value & 0x0000ff00) <<  8) |
+       ((value & 0x00ff0000) >>  8) |
+       ((value & 0xff000000) >> 24);
+}
 
 void exceptionHandler(int size)
 {
@@ -604,7 +620,7 @@ TheMainWhileLoop:
 
         if(compile_output)
         {
-            uschar sbuf[8];
+            unsigned char sbuf[8];
             int true_size = ((real_pcre *)filter_re)->size;
             int true_study_size = 0;
             pcre_extra* extra = pcre_study(filter_re, 0, &error);
@@ -1931,7 +1947,7 @@ int DeLiner(FILE* file, int mode, int show_all_lines, char* start, char* end, in
 pcre* LoadCompiledRegExp(char* regExpFileName, pcre_extra** pExtra)
 {
     pcre *regExp = NULL;
-    uschar sbuf[8];
+    unsigned char sbuf[8];
     int true_size = 0;
     int true_study_size = 0;
     unsigned long int magic = 0;

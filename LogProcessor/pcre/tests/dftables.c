@@ -55,10 +55,9 @@ make use of its code from here in order to be consistent. */
 #include "pcre_internal.h"
 
 #define DFTABLES          /* pcre_maketables.c notices this */
-#include "pcre_maketables.c"
 
 
-int main(int argc, char **argv)
+int DFTables(int argc, char **argv)
 {
 FILE *f;
 int i = 1;

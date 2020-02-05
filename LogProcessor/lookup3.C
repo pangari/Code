@@ -1,4 +1,4 @@
-#include "lookup3.h"
+#include "lookup3.H"
 
 #include <string.h>
 #include <stdlib.h>

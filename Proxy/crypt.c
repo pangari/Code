@@ -1,10 +1,10 @@
 #include "crypt.h"
 #include "Logging.h"
 
-#include <blowfish.h>
-#include <ice.h>
-#include <tea.h>
-#include <aes.h>
+#include <fish/blowfish.h>
+#include <ice/ice.h>
+#include <tea/tea.h>
+#include <aes/aes.h>
 
 #ifdef WIN32
 #include <windows.h>
