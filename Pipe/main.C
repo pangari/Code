@@ -19,7 +19,7 @@
 #include <pthread.h>
 #endif
 
-#include <pipe.hpp>
+#include <pipe.H>
 
 char DecodeCString(char* szCHex, int* pCount)
 {
@@ -149,9 +149,9 @@ void* LogWriter(void* pVoid)
     int         nCount;
 
 #ifdef WIN32
-    Sleep(1000*20);
+    //Sleep(1000*20);
 #else
-    usleep(1000*1000*20);
+    //usleep(1000*1000*20);
 #endif
 
     while(pipe_read((int)*s, &len, 1) == 1)

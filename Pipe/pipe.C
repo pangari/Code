@@ -20,7 +20,7 @@ typedef int socklen_t;
 #include <pthread.h>
 #endif
 
-#include <pipe.hpp> 
+#include <pipe.H> 
 
 int disable_nagle(int fd)
 {
