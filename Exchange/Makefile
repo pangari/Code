@@ -1,5 +1,5 @@
 include ../Build/macros.tmpl
-APP=MatchingEngineTest
+APP=ExchangeTest
 
 EXTRA_LDFLAGS=-static
 
