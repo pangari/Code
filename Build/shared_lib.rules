@@ -17,7 +17,7 @@ endif
 STATIC_LIB=$(LIBDIR)/lib$(BASE).a
 SHARDED_LIB=$(LIBDIR)/lib$(BASE).so
 #SHARDED_CMD=$(LD) -shared -o $(SHARDED_LIB) -Wl,--whole-archive $(STATIC_LIB) -Wl,--no-whole-archive $(LDFLAGS) $(LIBS) $(EXTRA_OBJS)
-SHARDED_CMD=$(LD) -shared -o $(SHARDED_LIB) -Wl,-all_load $(STATIC_LIB) -Wl,-noall_load $(LDFLAGS) $(LIBS) $(EXTRA_OBJS)
+SHARDED_CMD=$(LD) -shared -o $(SHARDED_LIB) -Wl,--whole-archive $(STATIC_LIB) -Wl,--no-whole-archive $(LDFLAGS) $(LIBS) $(EXTRA_OBJS)
 
 COMMON_COMPILE_FLAGS += -fpic
 
