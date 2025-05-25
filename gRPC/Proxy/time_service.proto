@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package time;
+
+service TimeService {
+  rpc GetCurrentTime (TimeRequest) returns (TimeResponse);
+}
+
+message TimeRequest {}
+
+message TimeResponse {
+  int64 seconds = 1;
+  int32 nanos = 2;
+}
+
